@@ -1,0 +1,6 @@
+{
+  "bokeh-port": 8787,
+  "http-port": 9786,
+  "tcp-port": 8786,
+  "host": "127.0.0.1"
+}

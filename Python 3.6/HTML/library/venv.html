@@ -1,0 +1,755 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>28.3. venv — Creation of virtual environments &mdash; Python 3.6.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/pydoctheme.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '3.6.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <link rel="search" type="application/opensearchdescription+xml"
+          title="Search within Python 3.6.0 documentation"
+          href="../_static/opensearch.xml"/>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="copyright" title="Copyright" href="../copyright.html" />
+    <link rel="top" title="Python 3.6.0 documentation" href="../contents.html" />
+    <link rel="up" title="28. Software Packaging and Distribution" href="distribution.html" />
+    <link rel="next" title="28.4. zipapp — Manage executable python zip archives" href="zipapp.html" />
+    <link rel="prev" title="28.2. ensurepip — Bootstrapping the pip installer" href="ensurepip.html" />
+    <link rel="shortcut icon" type="image/png" href="../_static/py.png" />
+    <link rel="canonical" href="https://docs.python.org/3/library/venv.html" />
+    
+    <script type="text/javascript" src="../_static/copybutton.js"></script>
+    <script type="text/javascript" src="../_static/version_switch.js"></script>
+    
+    
+ 
+
+  </head>
+  <body role="document">  
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="zipapp.html" title="28.4. zipapp — Manage executable python zip archives"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="ensurepip.html" title="28.2. ensurepip — Bootstrapping the pip installer"
+             accesskey="P">previous</a> |</li>
+        <li><img src="../_static/py.png" alt=""
+                 style="vertical-align: middle; margin-top: -1px"/></li>
+        <li><a href="https://www.python.org/">Python</a> &raquo;</li>
+        <li>
+          <span class="version_switcher_placeholder">3.6.0</span>
+          <a href="../index.html">Documentation </a> &raquo;
+        </li>
+
+          <li class="nav-item nav-item-1"><a href="index.html" >The Python Standard Library</a> &raquo;</li>
+          <li class="nav-item nav-item-2"><a href="distribution.html" accesskey="U">28. Software Packaging and Distribution</a> &raquo;</li>
+    <li class="right">
+        
+
+    <div class="inline-search" style="display: none" role="search">
+        <form class="inline-search" action="../search.html" method="get">
+          <input placeholder="Quick search" type="text" name="q" />
+          <input type="submit" value="Go" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+        </form>
+    </div>
+    <script type="text/javascript">$('.inline-search').show(0);</script>
+         |
+    </li>
+
+      </ul>
+    </div>    
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-venv">
+<span id="venv-creation-of-virtual-environments"></span><h1>28.3. <a class="reference internal" href="#module-venv" title="venv: Creation of virtual environments."><code class="xref py py-mod docutils literal"><span class="pre">venv</span></code></a> &#8212; Creation of virtual environments<a class="headerlink" href="#module-venv" title="Permalink to this headline">¶</a></h1>
+<div class="versionadded">
+<p><span class="versionmodified">New in version 3.3.</span></p>
+</div>
+<p><strong>Source code:</strong> <a class="reference external" href="https://hg.python.org/cpython/file/3.6/Lib/venv/">Lib/venv/</a></p>
+<hr class="docutils" id="index-0" />
+<p>The <a class="reference internal" href="#module-venv" title="venv: Creation of virtual environments."><code class="xref py py-mod docutils literal"><span class="pre">venv</span></code></a> module provides support for creating lightweight &#8220;virtual
+environments&#8221; with their own site directories, optionally isolated from system
+site directories.  Each virtual environment has its own Python binary (allowing
+creation of environments with various Python versions) and can have its own
+independent set of installed Python packages in its site directories.</p>
+<p>See <span class="target" id="index-1"></span><a class="pep reference external" href="https://www.python.org/dev/peps/pep-0405"><strong>PEP 405</strong></a> for more information about Python virtual environments.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The <code class="docutils literal"><span class="pre">pyvenv</span></code> script has been deprecated as of Python 3.6 in favor of using
+<code class="docutils literal"><span class="pre">python3</span> <span class="pre">-m</span> <span class="pre">venv</span></code> to help prevent any potential confusion as to which
+Python interpreter a virtual environment will be based on.</p>
+</div>
+<div class="section" id="creating-virtual-environments">
+<h2>28.3.1. Creating virtual environments<a class="headerlink" href="#creating-virtual-environments" title="Permalink to this headline">¶</a></h2>
+<p>Creation of <a class="reference internal" href="#venv-def"><span>virtual environments</span></a> is done by executing the
+command <code class="docutils literal"><span class="pre">venv</span></code>:</p>
+<div class="highlight-python3"><div class="highlight"><pre><span></span><span class="n">python3</span> <span class="o">-</span><span class="n">m</span> <span class="n">venv</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">new</span><span class="o">/</span><span class="n">virtual</span><span class="o">/</span><span class="n">environment</span>
+</pre></div>
+</div>
+<p>Running this command creates the target directory (creating any parent
+directories that don&#8217;t exist already) and places a <code class="docutils literal"><span class="pre">pyvenv.cfg</span></code> file in it
+with a <code class="docutils literal"><span class="pre">home</span></code> key pointing to the Python installation from which the command
+was run.  It also creates a <code class="docutils literal"><span class="pre">bin</span></code> (or <code class="docutils literal"><span class="pre">Scripts</span></code> on Windows) subdirectory
+containing a copy of the <code class="docutils literal"><span class="pre">python</span></code> binary (or binaries, in the case of
+Windows).  It also creates an (initially empty) <code class="docutils literal"><span class="pre">lib/pythonX.Y/site-packages</span></code>
+subdirectory (on Windows, this is <code class="docutils literal"><span class="pre">Lib\site-packages</span></code>).</p>
+<div class="deprecated">
+<p><span class="versionmodified">Deprecated since version 3.6: </span><code class="docutils literal"><span class="pre">pyvenv</span></code> was the recommended tool for creating virtual environments for
+Python 3.3 and 3.4, and is <a class="reference external" href="https://docs.python.org/dev/whatsnew/3.6.html#deprecated-features">deprecated in Python 3.6</a>.</p>
+</div>
+<div class="versionchanged">
+<p><span class="versionmodified">Changed in version 3.5: </span>The use of <code class="docutils literal"><span class="pre">venv</span></code> is now recommended for creating virtual environments.</p>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference external" href="https://packaging.python.org/installing/#creating-virtual-environments">Python Packaging User Guide: Creating and using virtual environments</a></p>
+</div>
+<p>On Windows, invoke the <code class="docutils literal"><span class="pre">venv</span></code> command as follows:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>c:\&gt;c:\Python35\python -m venv c:\path\to\myenv
+</pre></div>
+</div>
+<p>Alternatively, if you configured the <code class="docutils literal"><span class="pre">PATH</span></code> and <code class="docutils literal"><span class="pre">PATHEXT</span></code> variables for
+your <a class="reference internal" href="../using/windows.html#using-on-windows"><span>Python installation</span></a>:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>c:\&gt;python -m venv myenv c:\path\to\myenv
+</pre></div>
+</div>
+<p>The command, if run with <code class="docutils literal"><span class="pre">-h</span></code>, will show the available options:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>usage: venv [-h] [--system-site-packages] [--symlinks | --copies] [--clear]
+            [--upgrade] [--without-pip]
+            ENV_DIR [ENV_DIR ...]
+
+Creates virtual Python environments in one or more target directories.
+
+positional arguments:
+  ENV_DIR               A directory to create the environment in.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --system-site-packages
+                        Give the virtual environment access to the system
+                        site-packages dir.
+  --symlinks            Try to use symlinks rather than copies, when symlinks
+                        are not the default for the platform.
+  --copies              Try to use copies rather than symlinks, even when
+                        symlinks are the default for the platform.
+  --clear               Delete the contents of the environment directory if it
+                        already exists, before environment creation.
+  --upgrade             Upgrade the environment directory to use this version
+                        of Python, assuming Python has been upgraded in-place.
+  --without-pip         Skips installing or upgrading pip in the virtual
+                        environment (pip is bootstrapped by default)
+
+Once an environment has been created, you may wish to activate it, e.g. by
+sourcing an activate script in its bin directory.
+</pre></div>
+</div>
+<div class="versionchanged">
+<p><span class="versionmodified">Changed in version 3.4: </span>Installs pip by default, added the <code class="docutils literal"><span class="pre">--without-pip</span></code>  and <code class="docutils literal"><span class="pre">--copies</span></code>
+options</p>
+</div>
+<div class="versionchanged">
+<p><span class="versionmodified">Changed in version 3.4: </span>In earlier versions, if the target directory already existed, an error was
+raised, unless the <code class="docutils literal"><span class="pre">--clear</span></code> or <code class="docutils literal"><span class="pre">--upgrade</span></code> option was provided. Now,
+if an existing directory is specified, its contents are removed and
+the directory is processed as if it had been newly created.</p>
+</div>
+<p>The created <code class="docutils literal"><span class="pre">pyvenv.cfg</span></code> file also includes the
+<code class="docutils literal"><span class="pre">include-system-site-packages</span></code> key, set to <code class="docutils literal"><span class="pre">true</span></code> if <code class="docutils literal"><span class="pre">venv</span></code> is
+run with the <code class="docutils literal"><span class="pre">--system-site-packages</span></code> option, <code class="docutils literal"><span class="pre">false</span></code> otherwise.</p>
+<p>Unless the <code class="docutils literal"><span class="pre">--without-pip</span></code> option is given, <a class="reference internal" href="ensurepip.html#module-ensurepip" title="ensurepip: Bootstrapping the &quot;pip&quot; installer into an existing Python installation or virtual environment."><code class="xref py py-mod docutils literal"><span class="pre">ensurepip</span></code></a> will be
+invoked to bootstrap <code class="docutils literal"><span class="pre">pip</span></code> into the virtual environment.</p>
+<p>Multiple paths can be given to <code class="docutils literal"><span class="pre">venv</span></code>, in which case an identical virtual
+environment will be created, according to the given options, at each provided
+path.</p>
+<p>Once a virtual environment has been created, it can be &#8220;activated&#8221; using a
+script in the virtual environment&#8217;s binary directory. The invocation of the
+script is platform-specific:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="18%" />
+<col width="24%" />
+<col width="58%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Platform</th>
+<th class="head">Shell</th>
+<th class="head">Command to activate virtual environment</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Posix</td>
+<td>bash/zsh</td>
+<td>$ source &lt;venv&gt;/bin/activate</td>
+</tr>
+<tr class="row-odd"><td>&nbsp;</td>
+<td>fish</td>
+<td>$ . &lt;venv&gt;/bin/activate.fish</td>
+</tr>
+<tr class="row-even"><td>&nbsp;</td>
+<td>csh/tcsh</td>
+<td>$ source &lt;venv&gt;/bin/activate.csh</td>
+</tr>
+<tr class="row-odd"><td>Windows</td>
+<td>cmd.exe</td>
+<td>C:\&gt; &lt;venv&gt;\Scripts\activate.bat</td>
+</tr>
+<tr class="row-even"><td>&nbsp;</td>
+<td>PowerShell</td>
+<td>PS C:\&gt; &lt;venv&gt;\Scripts\Activate.ps1</td>
+</tr>
+</tbody>
+</table>
+<p>You don&#8217;t specifically <em>need</em> to activate an environment; activation just
+prepends the virtual environment&#8217;s binary directory to your path, so that
+&#8220;python&#8221; invokes the virtual environment&#8217;s Python interpreter and you can run
+installed scripts without having to use their full path. However, all scripts
+installed in a virtual environment should be runnable without activating it,
+and run with the virtual environment&#8217;s Python automatically.</p>
+<p>You can deactivate a virtual environment by typing &#8220;deactivate&#8221; in your shell.
+The exact mechanism is platform-specific: for example, the Bash activation
+script defines a &#8220;deactivate&#8221; function, whereas on Windows there are separate
+scripts called <code class="docutils literal"><span class="pre">deactivate.bat</span></code> and <code class="docutils literal"><span class="pre">Deactivate.ps1</span></code> which are installed
+when the virtual environment is created.</p>
+<div class="versionadded">
+<p><span class="versionmodified">New in version 3.4: </span><code class="docutils literal"><span class="pre">fish</span></code> and <code class="docutils literal"><span class="pre">csh</span></code> activation scripts.</p>
+</div>
+<div class="admonition note" id="venv-def">
+<p class="first admonition-title">Note</p>
+<p>A virtual environment is a Python environment such that the Python
+interpreter, libraries and scripts installed into it are isolated from those
+installed in other virtual environments, and (by default) any libraries
+installed in a &#8220;system&#8221; Python, i.e., one which is installed as part of your
+operating system.</p>
+<p>A virtual environment is a directory tree which contains Python executable
+files and other files which indicate that it is a virtual environment.</p>
+<p>Common installation tools such as <code class="docutils literal"><span class="pre">Setuptools</span></code> and <code class="docutils literal"><span class="pre">pip</span></code> work as
+expected with virtual environments. In other words, when a virtual
+environment is active, they install Python packages into the virtual
+environment without needing to be told to do so explicitly.</p>
+<p>When a virtual environment is active (i.e., the virtual environment&#8217;s Python
+interpreter is running), the attributes <a class="reference internal" href="sys.html#sys.prefix" title="sys.prefix"><code class="xref py py-attr docutils literal"><span class="pre">sys.prefix</span></code></a> and
+<a class="reference internal" href="sys.html#sys.exec_prefix" title="sys.exec_prefix"><code class="xref py py-attr docutils literal"><span class="pre">sys.exec_prefix</span></code></a> point to the base directory of the virtual
+environment, whereas <a class="reference internal" href="sys.html#sys.base_prefix" title="sys.base_prefix"><code class="xref py py-attr docutils literal"><span class="pre">sys.base_prefix</span></code></a> and
+<a class="reference internal" href="sys.html#sys.base_exec_prefix" title="sys.base_exec_prefix"><code class="xref py py-attr docutils literal"><span class="pre">sys.base_exec_prefix</span></code></a> point to the non-virtual environment Python
+installation which was used to create the virtual environment. If a virtual
+environment is not active, then <a class="reference internal" href="sys.html#sys.prefix" title="sys.prefix"><code class="xref py py-attr docutils literal"><span class="pre">sys.prefix</span></code></a> is the same as
+<a class="reference internal" href="sys.html#sys.base_prefix" title="sys.base_prefix"><code class="xref py py-attr docutils literal"><span class="pre">sys.base_prefix</span></code></a> and <a class="reference internal" href="sys.html#sys.exec_prefix" title="sys.exec_prefix"><code class="xref py py-attr docutils literal"><span class="pre">sys.exec_prefix</span></code></a> is the same as
+<a class="reference internal" href="sys.html#sys.base_exec_prefix" title="sys.base_exec_prefix"><code class="xref py py-attr docutils literal"><span class="pre">sys.base_exec_prefix</span></code></a> (they all point to a non-virtual environment
+Python installation).</p>
+<p>When a virtual environment is active, any options that change the
+installation path will be ignored from all distutils configuration files to
+prevent projects being inadvertently installed outside of the virtual
+environment.</p>
+<p class="last">When working in a command shell, users can make a virtual environment active
+by running an <code class="docutils literal"><span class="pre">activate</span></code> script in the virtual environment&#8217;s executables
+directory (the precise filename is shell-dependent), which prepends the
+virtual environment&#8217;s directory for executables to the <code class="docutils literal"><span class="pre">PATH</span></code> environment
+variable for the running shell. There should be no need in other
+circumstances to activate a virtual environment—scripts installed into
+virtual environments have a &#8220;shebang&#8221; line which points to the virtual
+environment&#8217;s Python interpreter. This means that the script will run with
+that interpreter regardless of the value of <code class="docutils literal"><span class="pre">PATH</span></code>. On Windows, &#8220;shebang&#8221;
+line processing is supported if you have the Python Launcher for Windows
+installed (this was added to Python in 3.3 - see <span class="target" id="index-2"></span><a class="pep reference external" href="https://www.python.org/dev/peps/pep-0397"><strong>PEP 397</strong></a> for more
+details). Thus, double-clicking an installed script in a Windows Explorer
+window should run the script with the correct interpreter without there
+needing to be any reference to its virtual environment in <code class="docutils literal"><span class="pre">PATH</span></code>.</p>
+</div>
+</div>
+<div class="section" id="api">
+<span id="venv-api"></span><h2>28.3.2. API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h2>
+<p>The high-level method described above makes use of a simple API which provides
+mechanisms for third-party virtual environment creators to customize environment
+creation according to their needs, the <a class="reference internal" href="#venv.EnvBuilder" title="venv.EnvBuilder"><code class="xref py py-class docutils literal"><span class="pre">EnvBuilder</span></code></a> class.</p>
+<dl class="class">
+<dt id="venv.EnvBuilder">
+<em class="property">class </em><code class="descclassname">venv.</code><code class="descname">EnvBuilder</code><span class="sig-paren">(</span><em>system_site_packages=False</em>, <em>clear=False</em>, <em>symlinks=False</em>, <em>upgrade=False</em>, <em>with_pip=False</em>, <em>prompt=None</em><span class="sig-paren">)</span><a class="headerlink" href="#venv.EnvBuilder" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <a class="reference internal" href="#venv.EnvBuilder" title="venv.EnvBuilder"><code class="xref py py-class docutils literal"><span class="pre">EnvBuilder</span></code></a> class accepts the following keyword arguments on
+instantiation:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">system_site_packages</span></code> &#8211; a Boolean value indicating that the system Python
+site-packages should be available to the environment (defaults to <code class="docutils literal"><span class="pre">False</span></code>).</li>
+<li><code class="docutils literal"><span class="pre">clear</span></code> &#8211; a Boolean value which, if true, will delete the contents of
+any existing target directory, before creating the environment.</li>
+<li><code class="docutils literal"><span class="pre">symlinks</span></code> &#8211; a Boolean value indicating whether to attempt to symlink the
+Python binary (and any necessary DLLs or other binaries,
+e.g. <code class="docutils literal"><span class="pre">pythonw.exe</span></code>), rather than copying. Defaults to <code class="docutils literal"><span class="pre">True</span></code> on Linux and
+Unix systems, but <code class="docutils literal"><span class="pre">False</span></code> on Windows.</li>
+<li><code class="docutils literal"><span class="pre">upgrade</span></code> &#8211; a Boolean value which, if true, will upgrade an existing
+environment with the running Python - for use when that Python has been
+upgraded in-place (defaults to <code class="docutils literal"><span class="pre">False</span></code>).</li>
+<li><code class="docutils literal"><span class="pre">with_pip</span></code> &#8211; a Boolean value which, if true, ensures pip is
+installed in the virtual environment. This uses <a class="reference internal" href="ensurepip.html#module-ensurepip" title="ensurepip: Bootstrapping the &quot;pip&quot; installer into an existing Python installation or virtual environment."><code class="xref py py-mod docutils literal"><span class="pre">ensurepip</span></code></a> with
+the <code class="docutils literal"><span class="pre">--default-pip</span></code> option.</li>
+<li><code class="docutils literal"><span class="pre">prompt</span></code> &#8211; a String to be used after virtual environment is activated
+(defaults to <code class="docutils literal"><span class="pre">None</span></code> which means directory name of the environment would
+be used).</li>
+</ul>
+<div class="versionchanged">
+<p><span class="versionmodified">Changed in version 3.4: </span>Added the <code class="docutils literal"><span class="pre">with_pip</span></code> parameter</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified">New in version 3.6: </span>Added the <code class="docutils literal"><span class="pre">prompt</span></code> parameter</p>
+</div>
+<p>Creators of third-party virtual environment tools will be free to use the
+provided <code class="docutils literal"><span class="pre">EnvBuilder</span></code> class as a base class.</p>
+<p>The returned env-builder is an object which has a method, <code class="docutils literal"><span class="pre">create</span></code>:</p>
+<dl class="method">
+<dt id="venv.EnvBuilder.create">
+<code class="descname">create</code><span class="sig-paren">(</span><em>env_dir</em><span class="sig-paren">)</span><a class="headerlink" href="#venv.EnvBuilder.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method takes as required argument the path (absolute or relative to
+the current directory) of the target directory which is to contain the
+virtual environment.  The <code class="docutils literal"><span class="pre">create</span></code> method will either create the
+environment in the specified directory, or raise an appropriate
+exception.</p>
+<p>The <code class="docutils literal"><span class="pre">create</span></code> method of the <code class="docutils literal"><span class="pre">EnvBuilder</span></code> class illustrates the hooks
+available for subclass customization:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env_dir</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create a virtualized Python environment in a directory.</span>
+<span class="sd">    env_dir is the target directory to create an environment in.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">env_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">env_dir</span><span class="p">)</span>
+    <span class="n">context</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ensure_directories</span><span class="p">(</span><span class="n">env_dir</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">create_configuration</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">setup_python</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">setup_scripts</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">post_setup</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Each of the methods <a class="reference internal" href="#venv.EnvBuilder.ensure_directories" title="venv.EnvBuilder.ensure_directories"><code class="xref py py-meth docutils literal"><span class="pre">ensure_directories()</span></code></a>,
+<a class="reference internal" href="#venv.EnvBuilder.create_configuration" title="venv.EnvBuilder.create_configuration"><code class="xref py py-meth docutils literal"><span class="pre">create_configuration()</span></code></a>, <a class="reference internal" href="#venv.EnvBuilder.setup_python" title="venv.EnvBuilder.setup_python"><code class="xref py py-meth docutils literal"><span class="pre">setup_python()</span></code></a>,
+<a class="reference internal" href="#venv.EnvBuilder.setup_scripts" title="venv.EnvBuilder.setup_scripts"><code class="xref py py-meth docutils literal"><span class="pre">setup_scripts()</span></code></a> and <a class="reference internal" href="#venv.EnvBuilder.post_setup" title="venv.EnvBuilder.post_setup"><code class="xref py py-meth docutils literal"><span class="pre">post_setup()</span></code></a> can be overridden.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="venv.EnvBuilder.ensure_directories">
+<code class="descname">ensure_directories</code><span class="sig-paren">(</span><em>env_dir</em><span class="sig-paren">)</span><a class="headerlink" href="#venv.EnvBuilder.ensure_directories" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates the environment directory and all necessary directories, and
+returns a context object.  This is just a holder for attributes (such as
+paths), for use by the other methods. The directories are allowed to
+exist already, as long as either <code class="docutils literal"><span class="pre">clear</span></code> or <code class="docutils literal"><span class="pre">upgrade</span></code> were
+specified to allow operating on an existing environment directory.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="venv.EnvBuilder.create_configuration">
+<code class="descname">create_configuration</code><span class="sig-paren">(</span><em>context</em><span class="sig-paren">)</span><a class="headerlink" href="#venv.EnvBuilder.create_configuration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates the <code class="docutils literal"><span class="pre">pyvenv.cfg</span></code> configuration file in the environment.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="venv.EnvBuilder.setup_python">
+<code class="descname">setup_python</code><span class="sig-paren">(</span><em>context</em><span class="sig-paren">)</span><a class="headerlink" href="#venv.EnvBuilder.setup_python" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a copy of the Python executable (and, under Windows, DLLs) in
+the environment. On a POSIX system, if a specific executable
+<code class="docutils literal"><span class="pre">python3.x</span></code> was used, symlinks to <code class="docutils literal"><span class="pre">python</span></code> and <code class="docutils literal"><span class="pre">python3</span></code> will be
+created pointing to that executable, unless files with those names
+already exist.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="venv.EnvBuilder.setup_scripts">
+<code class="descname">setup_scripts</code><span class="sig-paren">(</span><em>context</em><span class="sig-paren">)</span><a class="headerlink" href="#venv.EnvBuilder.setup_scripts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Installs activation scripts appropriate to the platform into the virtual
+environment.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="venv.EnvBuilder.post_setup">
+<code class="descname">post_setup</code><span class="sig-paren">(</span><em>context</em><span class="sig-paren">)</span><a class="headerlink" href="#venv.EnvBuilder.post_setup" title="Permalink to this definition">¶</a></dt>
+<dd><p>A placeholder method which can be overridden in third party
+implementations to pre-install packages in the virtual environment or
+perform other post-creation steps.</p>
+</dd></dl>
+
+<p>In addition, <a class="reference internal" href="#venv.EnvBuilder" title="venv.EnvBuilder"><code class="xref py py-class docutils literal"><span class="pre">EnvBuilder</span></code></a> provides this utility method that can be
+called from <a class="reference internal" href="#venv.EnvBuilder.setup_scripts" title="venv.EnvBuilder.setup_scripts"><code class="xref py py-meth docutils literal"><span class="pre">setup_scripts()</span></code></a> or <a class="reference internal" href="#venv.EnvBuilder.post_setup" title="venv.EnvBuilder.post_setup"><code class="xref py py-meth docutils literal"><span class="pre">post_setup()</span></code></a> in subclasses to
+assist in installing custom scripts into the virtual environment.</p>
+<dl class="method">
+<dt id="venv.EnvBuilder.install_scripts">
+<code class="descname">install_scripts</code><span class="sig-paren">(</span><em>context</em>, <em>path</em><span class="sig-paren">)</span><a class="headerlink" href="#venv.EnvBuilder.install_scripts" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>path</em> is the path to a directory that should contain subdirectories
+&#8220;common&#8221;, &#8220;posix&#8221;, &#8220;nt&#8221;, each containing scripts destined for the bin
+directory in the environment.  The contents of &#8220;common&#8221; and the
+directory corresponding to <a class="reference internal" href="os.html#os.name" title="os.name"><code class="xref py py-data docutils literal"><span class="pre">os.name</span></code></a> are copied after some text
+replacement of placeholders:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">__VENV_DIR__</span></code> is replaced with the absolute path of the environment
+directory.</li>
+<li><code class="docutils literal"><span class="pre">__VENV_NAME__</span></code> is replaced with the environment name (final path
+segment of environment directory).</li>
+<li><code class="docutils literal"><span class="pre">__VENV_PROMPT__</span></code> is replaced with the prompt (the environment
+name surrounded by parentheses and with a following space)</li>
+<li><code class="docutils literal"><span class="pre">__VENV_BIN_NAME__</span></code> is replaced with the name of the bin directory
+(either <code class="docutils literal"><span class="pre">bin</span></code> or <code class="docutils literal"><span class="pre">Scripts</span></code>).</li>
+<li><code class="docutils literal"><span class="pre">__VENV_PYTHON__</span></code> is replaced with the absolute path of the
+environment&#8217;s executable.</li>
+</ul>
+<p>The directories are allowed to exist (for when an existing environment
+is being upgraded).</p>
+</dd></dl>
+
+</dd></dl>
+
+<p>There is also a module-level convenience function:</p>
+<dl class="function">
+<dt id="venv.create">
+<code class="descclassname">venv.</code><code class="descname">create</code><span class="sig-paren">(</span><em>env_dir</em>, <em>system_site_packages=False</em>, <em>clear=False</em>, <em>symlinks=False</em>, <em>with_pip=False</em><span class="sig-paren">)</span><a class="headerlink" href="#venv.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create an <a class="reference internal" href="#venv.EnvBuilder" title="venv.EnvBuilder"><code class="xref py py-class docutils literal"><span class="pre">EnvBuilder</span></code></a> with the given keyword arguments, and call its
+<a class="reference internal" href="#venv.EnvBuilder.create" title="venv.EnvBuilder.create"><code class="xref py py-meth docutils literal"><span class="pre">create()</span></code></a> method with the <em>env_dir</em> argument.</p>
+<div class="versionchanged">
+<p><span class="versionmodified">Changed in version 3.4: </span>Added the <code class="docutils literal"><span class="pre">with_pip</span></code> parameter</p>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="an-example-of-extending-envbuilder">
+<h2>28.3.3. An example of extending <code class="docutils literal"><span class="pre">EnvBuilder</span></code><a class="headerlink" href="#an-example-of-extending-envbuilder" title="Permalink to this headline">¶</a></h2>
+<p>The following script shows how to extend <a class="reference internal" href="#venv.EnvBuilder" title="venv.EnvBuilder"><code class="xref py py-class docutils literal"><span class="pre">EnvBuilder</span></code></a> by implementing a
+subclass which installs setuptools and pip into a created virtual environment:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>import os
+import os.path
+from subprocess import Popen, PIPE
+import sys
+from threading import Thread
+from urllib.parse import urlparse
+from urllib.request import urlretrieve
+import venv
+
+class ExtendedEnvBuilder(venv.EnvBuilder):
+    &quot;&quot;&quot;
+    This builder installs setuptools and pip so that you can pip or
+    easy_install other packages into the created virtual environment.
+
+    :param nodist: If True, setuptools and pip are not installed into the
+                   created virtual environment.
+    :param nopip: If True, pip is not installed into the created
+                  virtual environment.
+    :param progress: If setuptools or pip are installed, the progress of the
+                     installation can be monitored by passing a progress
+                     callable. If specified, it is called with two
+                     arguments: a string indicating some progress, and a
+                     context indicating where the string is coming from.
+                     The context argument can have one of three values:
+                     &#39;main&#39;, indicating that it is called from virtualize()
+                     itself, and &#39;stdout&#39; and &#39;stderr&#39;, which are obtained
+                     by reading lines from the output streams of a subprocess
+                     which is used to install the app.
+
+                     If a callable is not specified, default progress
+                     information is output to sys.stderr.
+    &quot;&quot;&quot;
+
+    def __init__(self, *args, **kwargs):
+        self.nodist = kwargs.pop(&#39;nodist&#39;, False)
+        self.nopip = kwargs.pop(&#39;nopip&#39;, False)
+        self.progress = kwargs.pop(&#39;progress&#39;, None)
+        self.verbose = kwargs.pop(&#39;verbose&#39;, False)
+        super().__init__(*args, **kwargs)
+
+    def post_setup(self, context):
+        &quot;&quot;&quot;
+        Set up any packages which need to be pre-installed into the
+        virtual environment being created.
+
+        :param context: The information for the virtual environment
+                        creation request being processed.
+        &quot;&quot;&quot;
+        os.environ[&#39;VIRTUAL_ENV&#39;] = context.env_dir
+        if not self.nodist:
+            self.install_setuptools(context)
+        # Can&#39;t install pip without setuptools
+        if not self.nopip and not self.nodist:
+            self.install_pip(context)
+
+    def reader(self, stream, context):
+        &quot;&quot;&quot;
+        Read lines from a subprocess&#39; output stream and either pass to a progress
+        callable (if specified) or write progress information to sys.stderr.
+        &quot;&quot;&quot;
+        progress = self.progress
+        while True:
+            s = stream.readline()
+            if not s:
+                break
+            if progress is not None:
+                progress(s, context)
+            else:
+                if not self.verbose:
+                    sys.stderr.write(&#39;.&#39;)
+                else:
+                    sys.stderr.write(s.decode(&#39;utf-8&#39;))
+                sys.stderr.flush()
+        stream.close()
+
+    def install_script(self, context, name, url):
+        _, _, path, _, _, _ = urlparse(url)
+        fn = os.path.split(path)[-1]
+        binpath = context.bin_path
+        distpath = os.path.join(binpath, fn)
+        # Download script into the virtual environment&#39;s binaries folder
+        urlretrieve(url, distpath)
+        progress = self.progress
+        if self.verbose:
+            term = &#39;\n&#39;
+        else:
+            term = &#39;&#39;
+        if progress is not None:
+            progress(&#39;Installing %s ...%s&#39; % (name, term), &#39;main&#39;)
+        else:
+            sys.stderr.write(&#39;Installing %s ...%s&#39; % (name, term))
+            sys.stderr.flush()
+        # Install in the virtual environment
+        args = [context.env_exe, fn]
+        p = Popen(args, stdout=PIPE, stderr=PIPE, cwd=binpath)
+        t1 = Thread(target=self.reader, args=(p.stdout, &#39;stdout&#39;))
+        t1.start()
+        t2 = Thread(target=self.reader, args=(p.stderr, &#39;stderr&#39;))
+        t2.start()
+        p.wait()
+        t1.join()
+        t2.join()
+        if progress is not None:
+            progress(&#39;done.&#39;, &#39;main&#39;)
+        else:
+            sys.stderr.write(&#39;done.\n&#39;)
+        # Clean up - no longer needed
+        os.unlink(distpath)
+
+    def install_setuptools(self, context):
+        &quot;&quot;&quot;
+        Install setuptools in the virtual environment.
+
+        :param context: The information for the virtual environment
+                        creation request being processed.
+        &quot;&quot;&quot;
+        url = &#39;https://bitbucket.org/pypa/setuptools/downloads/ez_setup.py&#39;
+        self.install_script(context, &#39;setuptools&#39;, url)
+        # clear up the setuptools archive which gets downloaded
+        pred = lambda o: o.startswith(&#39;setuptools-&#39;) and o.endswith(&#39;.tar.gz&#39;)
+        files = filter(pred, os.listdir(context.bin_path))
+        for f in files:
+            f = os.path.join(context.bin_path, f)
+            os.unlink(f)
+
+    def install_pip(self, context):
+        &quot;&quot;&quot;
+        Install pip in the virtual environment.
+
+        :param context: The information for the virtual environment
+                        creation request being processed.
+        &quot;&quot;&quot;
+        url = &#39;https://raw.github.com/pypa/pip/master/contrib/get-pip.py&#39;
+        self.install_script(context, &#39;pip&#39;, url)
+
+def main(args=None):
+    compatible = True
+    if sys.version_info &lt; (3, 3):
+        compatible = False
+    elif not hasattr(sys, &#39;base_prefix&#39;):
+        compatible = False
+    if not compatible:
+        raise ValueError(&#39;This script is only for use with &#39;
+                         &#39;Python 3.3 or later&#39;)
+    else:
+        import argparse
+
+        parser = argparse.ArgumentParser(prog=__name__,
+                                         description=&#39;Creates virtual Python &#39;
+                                                     &#39;environments in one or &#39;
+                                                     &#39;more target &#39;
+                                                     &#39;directories.&#39;)
+        parser.add_argument(&#39;dirs&#39;, metavar=&#39;ENV_DIR&#39;, nargs=&#39;+&#39;,
+                            help=&#39;A directory in which to create the
+                                 &#39;virtual environment.&#39;)
+        parser.add_argument(&#39;--no-setuptools&#39;, default=False,
+                            action=&#39;store_true&#39;, dest=&#39;nodist&#39;,
+                            help=&quot;Don&#39;t install setuptools or pip in the &quot;
+                                 &quot;virtual environment.&quot;)
+        parser.add_argument(&#39;--no-pip&#39;, default=False,
+                            action=&#39;store_true&#39;, dest=&#39;nopip&#39;,
+                            help=&quot;Don&#39;t install pip in the virtual &quot;
+                                 &quot;environment.&quot;)
+        parser.add_argument(&#39;--system-site-packages&#39;, default=False,
+                            action=&#39;store_true&#39;, dest=&#39;system_site&#39;,
+                            help=&#39;Give the virtual environment access to the &#39;
+                                 &#39;system site-packages dir.&#39;)
+        if os.name == &#39;nt&#39;:
+            use_symlinks = False
+        else:
+            use_symlinks = True
+        parser.add_argument(&#39;--symlinks&#39;, default=use_symlinks,
+                            action=&#39;store_true&#39;, dest=&#39;symlinks&#39;,
+                            help=&#39;Try to use symlinks rather than copies, &#39;
+                                 &#39;when symlinks are not the default for &#39;
+                                 &#39;the platform.&#39;)
+        parser.add_argument(&#39;--clear&#39;, default=False, action=&#39;store_true&#39;,
+                            dest=&#39;clear&#39;, help=&#39;Delete the contents of the &#39;
+                                               &#39;virtual environment &#39;
+                                               &#39;directory if it already &#39;
+                                               &#39;exists, before virtual &#39;
+                                               &#39;environment creation.&#39;)
+        parser.add_argument(&#39;--upgrade&#39;, default=False, action=&#39;store_true&#39;,
+                            dest=&#39;upgrade&#39;, help=&#39;Upgrade the virtual &#39;
+                                                 &#39;environment directory to &#39;
+                                                 &#39;use this version of &#39;
+                                                 &#39;Python, assuming Python &#39;
+                                                 &#39;has been upgraded &#39;
+                                                 &#39;in-place.&#39;)
+        parser.add_argument(&#39;--verbose&#39;, default=False, action=&#39;store_true&#39;,
+                            dest=&#39;verbose&#39;, help=&#39;Display the output &#39;
+                                               &#39;from the scripts which &#39;
+                                               &#39;install setuptools and pip.&#39;)
+        options = parser.parse_args(args)
+        if options.upgrade and options.clear:
+            raise ValueError(&#39;you cannot supply --upgrade and --clear together.&#39;)
+        builder = ExtendedEnvBuilder(system_site_packages=options.system_site,
+                                       clear=options.clear,
+                                       symlinks=options.symlinks,
+                                       upgrade=options.upgrade,
+                                       nodist=options.nodist,
+                                       nopip=options.nopip,
+                                       verbose=options.verbose)
+        for d in options.dirs:
+            builder.create(d)
+
+if __name__ == &#39;__main__&#39;:
+    rc = 1
+    try:
+        main()
+        rc = 0
+    except Exception as e:
+        print(&#39;Error: %s&#39; % e, file=sys.stderr)
+    sys.exit(rc)
+</pre></div>
+</div>
+<p>This script is also available for download <a class="reference external" href="https://gist.github.com/4673395">online</a>.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../contents.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">28.3. <code class="docutils literal"><span class="pre">venv</span></code> &#8212; Creation of virtual environments</a><ul>
+<li><a class="reference internal" href="#creating-virtual-environments">28.3.1. Creating virtual environments</a></li>
+<li><a class="reference internal" href="#api">28.3.2. API</a></li>
+<li><a class="reference internal" href="#an-example-of-extending-envbuilder">28.3.3. An example of extending <code class="docutils literal"><span class="pre">EnvBuilder</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="ensurepip.html"
+                        title="previous chapter">28.2. <code class="docutils literal"><span class="pre">ensurepip</span></code> &#8212; Bootstrapping the <code class="docutils literal"><span class="pre">pip</span></code> installer</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="zipapp.html"
+                        title="next chapter">28.4. <code class="docutils literal"><span class="pre">zipapp</span></code> &#8212; Manage executable python zip archives</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../bugs.html">Report a Bug</a></li>
+      <li>
+        <a href="https://github.com/python/cpython/blob/3.6/Doc/library/venv.rst"
+            rel="nofollow">Show Source
+        </a>
+      </li>
+    </ul>
+  </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>  
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="zipapp.html" title="28.4. zipapp — Manage executable python zip archives"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="ensurepip.html" title="28.2. ensurepip — Bootstrapping the pip installer"
+             >previous</a> |</li>
+        <li><img src="../_static/py.png" alt=""
+                 style="vertical-align: middle; margin-top: -1px"/></li>
+        <li><a href="https://www.python.org/">Python</a> &raquo;</li>
+        <li>
+          <span class="version_switcher_placeholder">3.6.0</span>
+          <a href="../index.html">Documentation </a> &raquo;
+        </li>
+
+          <li class="nav-item nav-item-1"><a href="index.html" >The Python Standard Library</a> &raquo;</li>
+          <li class="nav-item nav-item-2"><a href="distribution.html" >28. Software Packaging and Distribution</a> &raquo;</li>
+    <li class="right">
+        
+
+    <div class="inline-search" style="display: none" role="search">
+        <form class="inline-search" action="../search.html" method="get">
+          <input placeholder="Quick search" type="text" name="q" />
+          <input type="submit" value="Go" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+        </form>
+    </div>
+    <script type="text/javascript">$('.inline-search').show(0);</script>
+         |
+    </li>
+
+      </ul>
+    </div>  
+    <div class="footer">
+    &copy; <a href="../copyright.html">Copyright</a> 2001-2017, Python Software Foundation.
+    <br />
+    The Python Software Foundation is a non-profit corporation.
+    <a href="https://www.python.org/psf/donations/">Please donate.</a>
+    <br />
+    Last updated on Feb 12, 2017.
+    <a href="../bugs.html">Found a bug</a>?
+    <br />
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.3.
+    </div>
+
+  </body>
+</html>

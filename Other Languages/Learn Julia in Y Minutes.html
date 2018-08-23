@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <!-- Use title if it's in the page YAML frontmatter -->
+        <title>Learn Julia in Y Minutes</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+
+        <link rel="stylesheet" href="/css/normalize.css">
+        <link rel="stylesheet" href="/css/main.css">
+        <link href="/css/screen.css" rel="stylesheet" />
+        <link href="/css/github.css" rel="stylesheet" />
+
+        <link rel="canonical" href="https://learnxinyminutes.com/docs/julia/">
+    </head>
+    <body>
+        <!--[if lt IE 7]>
+            <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
+        <![endif]-->
+
+        <div class="container">
+            <div class="share">
+    <span class="sharemsg">
+      <a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Flearnxinyminutes.com%2Fdocs%2Fjulia%2F&text=Learn+X+in+Y+minutes%2C+where+X%3DJulia">
+        Share this page
+      </a></span>
+
+      <span class='st_facebook_large' displayText='Facebook'></span>
+      <span class='st_twitter_large' displayText='Tweet'></span>
+  </div>
+  <h1><a href="/">Learn X in Y minutes</a></h2>
+  <h2>Where X=Julia</h2>
+    <p class="filelink">
+    Get the code:
+    <a href="/docs/files/learnjulia.jl">learnjulia.jl</a>
+    </p>
+  <div id="doc">
+    <p>Julia is a new homoiconic functional language focused on technical computing.
+While having the full power of homoiconic macros, first-class functions, and low-level control, Julia is as easy to learn and use as Python.</p>
+
+<p>This is based on Julia 0.4.</p>
+<div class="highlight"><pre><span class="c1"># Single line comments start with a hash (pound) symbol.</span>
+<span class="c1">#= Multiline comments can be written</span>
+   <span class="n">by</span> <span class="n">putting</span> <span class="s1">&#39;#=&#39;</span> <span class="n">before</span> <span class="n">the</span> <span class="n">text</span>  <span class="ow">and</span> <span class="s1">&#39;=#&#39;</span>
+   <span class="n">after</span> <span class="n">the</span> <span class="n">text</span><span class="o">.</span> <span class="no">They</span> <span class="n">can</span> <span class="n">also</span> <span class="n">be</span> <span class="n">nested</span><span class="o">.</span>
+<span class="o">=</span><span class="c1">#</span>
+
+<span class="c1">####################################################</span>
+<span class="c1">## 1. Primitive Datatypes and Operators</span>
+<span class="c1">####################################################</span>
+
+<span class="c1"># Everything in Julia is an expression.</span>
+
+<span class="c1"># There are several basic types of numbers.</span>
+<span class="mi">3</span> <span class="c1"># =&gt; 3 (Int64)</span>
+<span class="mi">3</span><span class="o">.</span><span class="mi">2</span> <span class="c1"># =&gt; 3.2 (Float64)</span>
+<span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="n">im</span> <span class="c1"># =&gt; 2 + 1im (Complex{Int64})</span>
+<span class="mi">2</span><span class="o">//</span><span class="mi">3</span> <span class="c1"># =&gt; 2//3 (Rational{Int64})</span>
+
+<span class="c1"># All of the normal infix operators are available.</span>
+<span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span> <span class="c1"># =&gt; 2</span>
+<span class="mi">8</span> <span class="o">-</span> <span class="mi">1</span> <span class="c1"># =&gt; 7</span>
+<span class="mi">10</span> <span class="o">*</span> <span class="mi">2</span> <span class="c1"># =&gt; 20</span>
+<span class="mi">35</span> <span class="o">/</span> <span class="mi">5</span> <span class="c1"># =&gt; 7.0</span>
+<span class="mi">5</span> <span class="o">/</span> <span class="mi">2</span> <span class="c1"># =&gt; 2.5 # dividing an Int by an Int always results in a Float</span>
+<span class="n">div</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="c1"># =&gt; 2 # for a truncated result, use div</span>
+<span class="mi">5</span> <span class="p">\</span> <span class="mi">35</span> <span class="c1"># =&gt; 7.0</span>
+<span class="mi">2</span> <span class="o">^</span> <span class="mi">2</span> <span class="c1"># =&gt; 4 # power, not bitwise xor</span>
+<span class="mi">12</span> <span class="o">%</span> <span class="mi">10</span> <span class="c1"># =&gt; 2</span>
+
+<span class="c1"># Enforce precedence with parentheses</span>
+<span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span> <span class="c1"># =&gt; 8</span>
+
+<span class="c1"># Bitwise Operators</span>
+<span class="o">~</span><span class="mi">2</span> <span class="c1"># =&gt; -3   # bitwise not</span>
+<span class="mi">3</span> <span class="o">&amp;</span> <span class="mi">5</span> <span class="c1"># =&gt; 1 # bitwise and</span>
+<span class="mi">2</span> <span class="o">|</span> <span class="mi">4</span> <span class="c1"># =&gt; 6 # bitwise or</span>
+<span class="mi">2</span> <span class="err">$</span> <span class="mi">4</span> <span class="c1"># =&gt; 6 # bitwise xor</span>
+<span class="mi">2</span> <span class="o">&gt;&gt;&gt;</span> <span class="mi">1</span> <span class="c1"># =&gt; 1 # logical shift right</span>
+<span class="mi">2</span> <span class="o">&gt;&gt;</span> <span class="mi">1</span>  <span class="c1"># =&gt; 1 # arithmetic shift right</span>
+<span class="mi">2</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span>  <span class="c1"># =&gt; 4 # logical/arithmetic shift left</span>
+
+<span class="c1"># You can use the bits function to see the binary representation of a number.</span>
+<span class="n">bits</span><span class="p">(</span><span class="mi">12345</span><span class="p">)</span>
+<span class="c1"># =&gt; &quot;0000000000000000000000000000000000000000000000000011000000111001&quot;</span>
+<span class="n">bits</span><span class="p">(</span><span class="mi">12345</span><span class="o">.</span><span class="mi">0</span><span class="p">)</span>
+<span class="c1"># =&gt; &quot;0100000011001000000111001000000000000000000000000000000000000000&quot;</span>
+
+<span class="c1"># Boolean values are primitives</span>
+<span class="kp">true</span>
+<span class="kp">false</span>
+
+<span class="c1"># Boolean operators</span>
+<span class="o">!</span><span class="kp">true</span> <span class="c1"># =&gt; false</span>
+<span class="o">!</span><span class="kp">false</span> <span class="c1"># =&gt; true</span>
+<span class="mi">1</span> <span class="o">==</span> <span class="mi">1</span> <span class="c1"># =&gt; true</span>
+<span class="mi">2</span> <span class="o">==</span> <span class="mi">1</span> <span class="c1"># =&gt; false</span>
+<span class="mi">1</span> <span class="o">!=</span> <span class="mi">1</span> <span class="c1"># =&gt; false</span>
+<span class="mi">2</span> <span class="o">!=</span> <span class="mi">1</span> <span class="c1"># =&gt; true</span>
+<span class="mi">1</span> <span class="o">&lt;</span> <span class="mi">10</span> <span class="c1"># =&gt; true</span>
+<span class="mi">1</span> <span class="o">&gt;</span> <span class="mi">10</span> <span class="c1"># =&gt; false</span>
+<span class="mi">2</span> <span class="o">&lt;=</span> <span class="mi">2</span> <span class="c1"># =&gt; true</span>
+<span class="mi">2</span> <span class="o">&gt;=</span> <span class="mi">2</span> <span class="c1"># =&gt; true</span>
+<span class="c1"># Comparisons can be chained</span>
+<span class="mi">1</span> <span class="o">&lt;</span> <span class="mi">2</span> <span class="o">&lt;</span> <span class="mi">3</span> <span class="c1"># =&gt; true</span>
+<span class="mi">2</span> <span class="o">&lt;</span> <span class="mi">3</span> <span class="o">&lt;</span> <span class="mi">2</span> <span class="c1"># =&gt; false</span>
+
+<span class="c1"># Strings are created with &quot;</span>
+<span class="s2">&quot;This is a string.&quot;</span>
+
+<span class="c1"># Julia has several types of strings, including ASCIIString and UTF8String.</span>
+<span class="c1"># More on this in the Types section.</span>
+
+<span class="c1"># Character literals are written with &#39;</span>
+<span class="s1">&#39;a&#39;</span>
+
+<span class="c1"># Some strings can be indexed like an array of characters</span>
+<span class="s2">&quot;This is a string&quot;</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span> <span class="c1"># =&gt; &#39;T&#39; # Julia indexes from 1</span>
+<span class="c1"># However, this is will not work well for UTF8 strings,</span>
+<span class="c1"># so iterating over strings is recommended (map, for loops, etc).</span>
+
+<span class="c1"># $ can be used for string interpolation:</span>
+<span class="s2">&quot;2 + 2 = $(2 + 2)&quot;</span> <span class="c1"># =&gt; &quot;2 + 2 = 4&quot;</span>
+<span class="c1"># You can put any Julia expression inside the parentheses.</span>
+
+<span class="c1"># Another way to format strings is the printf macro.</span>
+<span class="vi">@printf</span> <span class="s2">&quot;%d is less than %f&quot;</span> <span class="mi">4</span><span class="o">.</span><span class="mi">5</span> <span class="mi">5</span><span class="o">.</span><span class="mi">3</span> <span class="c1"># 5 is less than 5.300000</span>
+
+<span class="c1"># Printing is easy</span>
+<span class="n">println</span><span class="p">(</span><span class="s2">&quot;I&#39;m Julia. Nice to meet you!&quot;</span><span class="p">)</span>
+
+<span class="c1"># String can be compared lexicographically</span>
+<span class="s2">&quot;good&quot;</span> <span class="o">&gt;</span> <span class="s2">&quot;bye&quot;</span> <span class="c1"># =&gt; true</span>
+<span class="s2">&quot;good&quot;</span> <span class="o">==</span> <span class="s2">&quot;good&quot;</span> <span class="c1"># =&gt; true</span>
+<span class="s2">&quot;1 + 2 = 3&quot;</span> <span class="o">==</span> <span class="s2">&quot;1 + 2 = $(1+2)&quot;</span> <span class="c1"># =&gt; true</span>
+
+<span class="c1">####################################################</span>
+<span class="c1">## 2. Variables and Collections</span>
+<span class="c1">####################################################</span>
+
+<span class="c1"># You don&#39;t declare variables before assigning to them.</span>
+<span class="n">some_var</span> <span class="o">=</span> <span class="mi">5</span> <span class="c1"># =&gt; 5</span>
+<span class="n">some_var</span> <span class="c1"># =&gt; 5</span>
+
+<span class="c1"># Accessing a previously unassigned variable is an error</span>
+<span class="n">try</span>
+    <span class="n">some_other_var</span> <span class="c1"># =&gt; ERROR: some_other_var not defined</span>
+<span class="kp">catch</span> <span class="n">e</span>
+    <span class="n">println</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="c1"># Variable names start with a letter or underscore.</span>
+<span class="c1"># After that, you can use letters, digits, underscores, and exclamation points.</span>
+<span class="no">SomeOtherVar123</span><span class="o">!</span> <span class="o">=</span> <span class="mi">6</span> <span class="c1"># =&gt; 6</span>
+
+<span class="c1"># You can also use certain unicode characters</span>
+<span class="err">☃</span> <span class="o">=</span> <span class="mi">8</span> <span class="c1"># =&gt; 8</span>
+<span class="c1"># These are especially handy for mathematical notation</span>
+<span class="mi">2</span> <span class="o">*</span> <span class="err">π</span> <span class="c1"># =&gt; 6.283185307179586</span>
+
+<span class="c1"># A note on naming conventions in Julia:</span>
+<span class="c1">#</span>
+<span class="c1"># * Word separation can be indicated by underscores (&#39;_&#39;), but use of</span>
+<span class="c1">#   underscores is discouraged unless the name would be hard to read</span>
+<span class="c1">#   otherwise.</span>
+<span class="c1">#</span>
+<span class="c1"># * Names of Types begin with a capital letter and word separation is shown</span>
+<span class="c1">#   with CamelCase instead of underscores.</span>
+<span class="c1">#</span>
+<span class="c1"># * Names of functions and macros are in lower case, without underscores.</span>
+<span class="c1">#</span>
+<span class="c1"># * Functions that modify their inputs have names that end in !. These</span>
+<span class="c1">#   functions are sometimes called mutating functions or in-place functions.</span>
+
+<span class="c1"># Arrays store a sequence of values indexed by integers 1 through n:</span>
+<span class="n">a</span> <span class="o">=</span> <span class="no">Int64</span><span class="o">[]</span> <span class="c1"># =&gt; 0-element Int64 Array</span>
+
+<span class="c1"># 1-dimensional array literals can be written with comma-separated values.</span>
+<span class="n">b</span> <span class="o">=</span> <span class="o">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="o">]</span> <span class="c1"># =&gt; 3-element Int64 Array: [4, 5, 6]</span>
+<span class="n">b</span> <span class="o">=</span> <span class="o">[</span><span class="mi">4</span><span class="p">;</span> <span class="mi">5</span><span class="p">;</span> <span class="mi">6</span><span class="o">]</span> <span class="c1"># =&gt; 3-element Int64 Array: [4, 5, 6]</span>
+<span class="n">b</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span> <span class="c1"># =&gt; 4</span>
+<span class="n">b</span><span class="o">[</span><span class="k">end</span><span class="o">]</span> <span class="c1"># =&gt; 6</span>
+
+<span class="c1"># 2-dimensional arrays use space-separated values and semicolon-separated rows.</span>
+<span class="n">matrix</span> <span class="o">=</span> <span class="o">[</span><span class="mi">1</span> <span class="mi">2</span><span class="p">;</span> <span class="mi">3</span> <span class="mi">4</span><span class="o">]</span> <span class="c1"># =&gt; 2x2 Int64 Array: [1 2; 3 4]</span>
+
+<span class="c1"># Arrays of a particular Type</span>
+<span class="n">b</span> <span class="o">=</span> <span class="no">Int8</span><span class="o">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="o">]</span> <span class="c1"># =&gt; 3-element Int8 Array: [4, 5, 6]</span>
+
+<span class="c1"># Add stuff to the end of a list with push! and append!</span>
+<span class="n">push!</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>     <span class="c1"># =&gt; [1]</span>
+<span class="n">push!</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>     <span class="c1"># =&gt; [1,2]</span>
+<span class="n">push!</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>     <span class="c1"># =&gt; [1,2,4]</span>
+<span class="n">push!</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>     <span class="c1"># =&gt; [1,2,4,3]</span>
+<span class="n">append!</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span> <span class="c1"># =&gt; [1,2,4,3,4,5,6]</span>
+
+<span class="c1"># Remove from the end with pop</span>
+<span class="n">pop!</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>        <span class="c1"># =&gt; 6 and b is now [4,5]</span>
+
+<span class="c1"># Let&#39;s put it back</span>
+<span class="n">push!</span><span class="p">(</span><span class="n">b</span><span class="p">,</span><span class="mi">6</span><span class="p">)</span>   <span class="c1"># b is now [4,5,6] again.</span>
+
+<span class="n">a</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span> <span class="c1"># =&gt; 1 # remember that Julia indexes from 1, not 0!</span>
+
+<span class="c1"># end is a shorthand for the last index. It can be used in any</span>
+<span class="c1"># indexing expression</span>
+<span class="n">a</span><span class="o">[</span><span class="k">end</span><span class="o">]</span> <span class="c1"># =&gt; 6</span>
+
+<span class="c1"># we also have shift and unshift</span>
+<span class="n">shift!</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="c1"># =&gt; 1 and a is now [2,4,3,4,5,6]</span>
+<span class="n">unshift!</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="mi">7</span><span class="p">)</span> <span class="c1"># =&gt; [7,2,4,3,4,5,6]</span>
+
+<span class="c1"># Function names that end in exclamations points indicate that they modify</span>
+<span class="c1"># their argument.</span>
+<span class="n">arr</span> <span class="o">=</span> <span class="o">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">6</span><span class="o">]</span> <span class="c1"># =&gt; 3-element Int64 Array: [5,4,6]</span>
+<span class="n">sort</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span> <span class="c1"># =&gt; [4,5,6]; arr is still [5,4,6]</span>
+<span class="n">sort!</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span> <span class="c1"># =&gt; [4,5,6]; arr is now [4,5,6]</span>
+
+<span class="c1"># Looking out of bounds is a BoundsError</span>
+<span class="n">try</span>
+    <span class="n">a</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="c1"># =&gt; ERROR: BoundsError() in getindex at array.jl:270</span>
+    <span class="n">a</span><span class="o">[</span><span class="k">end</span><span class="o">+</span><span class="mi">1</span><span class="o">]</span> <span class="c1"># =&gt; ERROR: BoundsError() in getindex at array.jl:270</span>
+<span class="kp">catch</span> <span class="n">e</span>
+    <span class="n">println</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="c1"># Errors list the line and file they came from, even if it&#39;s in the standard</span>
+<span class="c1"># library. If you built Julia from source, you can look in the folder base</span>
+<span class="c1"># inside the julia folder to find these files.</span>
+
+<span class="c1"># You can initialize arrays from ranges</span>
+<span class="n">a</span> <span class="o">=</span> <span class="o">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">5</span><span class="p">;</span><span class="o">]</span> <span class="c1"># =&gt; 5-element Int64 Array: [1,2,3,4,5]</span>
+
+<span class="c1"># You can look at ranges with slice syntax.</span>
+<span class="n">a</span><span class="o">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="o">]</span> <span class="c1"># =&gt; [1, 2, 3]</span>
+<span class="n">a</span><span class="o">[</span><span class="mi">2</span><span class="ss">:end</span><span class="o">]</span> <span class="c1"># =&gt; [2, 3, 4, 5]</span>
+
+<span class="c1"># Remove elements from an array by index with splice!</span>
+<span class="n">arr</span> <span class="o">=</span> <span class="o">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="o">]</span>
+<span class="n">splice!</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="c1"># =&gt; 4 ; arr is now [3,5]</span>
+
+<span class="c1"># Concatenate lists with append!</span>
+<span class="n">b</span> <span class="o">=</span> <span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="o">]</span>
+<span class="n">append!</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span> <span class="c1"># Now a is [1, 2, 3, 4, 5, 1, 2, 3]</span>
+
+<span class="c1"># Check for existence in a list with in</span>
+<span class="k">in</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span> <span class="c1"># =&gt; true</span>
+
+<span class="c1"># Examine the length with length</span>
+<span class="n">length</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="c1"># =&gt; 8</span>
+
+<span class="c1"># Tuples are immutable.</span>
+<span class="n">tup</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="c1"># =&gt; (1,2,3) # an (Int64,Int64,Int64) tuple.</span>
+<span class="n">tup</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span> <span class="c1"># =&gt; 1</span>
+<span class="ss">try</span><span class="p">:</span>
+    <span class="n">tup</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span> <span class="o">=</span> <span class="mi">3</span> <span class="c1"># =&gt; ERROR: no method setindex!((Int64,Int64,Int64),Int64,Int64)</span>
+<span class="kp">catch</span> <span class="n">e</span>
+    <span class="n">println</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="c1"># Many list functions also work on tuples</span>
+<span class="n">length</span><span class="p">(</span><span class="n">tup</span><span class="p">)</span> <span class="c1"># =&gt; 3</span>
+<span class="n">tup</span><span class="o">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">2</span><span class="o">]</span> <span class="c1"># =&gt; (1,2)</span>
+<span class="k">in</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">tup</span><span class="p">)</span> <span class="c1"># =&gt; true</span>
+
+<span class="c1"># You can unpack tuples into variables</span>
+<span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="c1"># =&gt; (1,2,3)  # a is now 1, b is now 2 and c is now 3</span>
+
+<span class="c1"># Tuples are created even if you leave out the parentheses</span>
+<span class="n">d</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">f</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span> <span class="c1"># =&gt; (4,5,6)</span>
+
+<span class="c1"># A 1-element tuple is distinct from the value it contains</span>
+<span class="p">(</span><span class="mi">1</span><span class="p">,)</span> <span class="o">==</span> <span class="mi">1</span> <span class="c1"># =&gt; false</span>
+<span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="c1"># =&gt; true</span>
+
+<span class="c1"># Look how easy it is to swap two values</span>
+<span class="n">e</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">d</span><span class="p">,</span> <span class="n">e</span>  <span class="c1"># =&gt; (5,4) # d is now 5 and e is now 4</span>
+
+
+<span class="c1"># Dictionaries store mappings</span>
+<span class="n">empty_dict</span> <span class="o">=</span> <span class="no">Dict</span><span class="p">()</span> <span class="c1"># =&gt; Dict{Any,Any}()</span>
+
+<span class="c1"># You can create a dictionary using a literal</span>
+<span class="n">filled_dict</span> <span class="o">=</span> <span class="no">Dict</span><span class="p">(</span><span class="s2">&quot;one&quot;</span><span class="o">=&gt;</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;two&quot;</span><span class="o">=&gt;</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;three&quot;</span><span class="o">=&gt;</span> <span class="mi">3</span><span class="p">)</span>
+<span class="c1"># =&gt; Dict{ASCIIString,Int64}</span>
+
+<span class="c1"># Look up values with []</span>
+<span class="n">filled_dict</span><span class="o">[</span><span class="s2">&quot;one&quot;</span><span class="o">]</span> <span class="c1"># =&gt; 1</span>
+
+<span class="c1"># Get all keys</span>
+<span class="n">keys</span><span class="p">(</span><span class="n">filled_dict</span><span class="p">)</span>
+<span class="c1"># =&gt; KeyIterator{Dict{ASCIIString,Int64}}([&quot;three&quot;=&gt;3,&quot;one&quot;=&gt;1,&quot;two&quot;=&gt;2])</span>
+<span class="c1"># Note - dictionary keys are not sorted or in the order you inserted them.</span>
+
+<span class="c1"># Get all values</span>
+<span class="n">values</span><span class="p">(</span><span class="n">filled_dict</span><span class="p">)</span>
+<span class="c1"># =&gt; ValueIterator{Dict{ASCIIString,Int64}}([&quot;three&quot;=&gt;3,&quot;one&quot;=&gt;1,&quot;two&quot;=&gt;2])</span>
+<span class="c1"># Note - Same as above regarding key ordering.</span>
+
+<span class="c1"># Check for existence of keys in a dictionary with in, haskey</span>
+<span class="k">in</span><span class="p">((</span><span class="s2">&quot;one&quot;</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">),</span> <span class="n">filled_dict</span><span class="p">)</span> <span class="c1"># =&gt; true</span>
+<span class="k">in</span><span class="p">((</span><span class="s2">&quot;two&quot;</span> <span class="o">=&gt;</span> <span class="mi">3</span><span class="p">),</span> <span class="n">filled_dict</span><span class="p">)</span> <span class="c1"># =&gt; false</span>
+<span class="n">haskey</span><span class="p">(</span><span class="n">filled_dict</span><span class="p">,</span> <span class="s2">&quot;one&quot;</span><span class="p">)</span> <span class="c1"># =&gt; true</span>
+<span class="n">haskey</span><span class="p">(</span><span class="n">filled_dict</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="c1"># =&gt; false</span>
+
+<span class="c1"># Trying to look up a non-existent key will raise an error</span>
+<span class="n">try</span>
+    <span class="n">filled_dict</span><span class="o">[</span><span class="s2">&quot;four&quot;</span><span class="o">]</span> <span class="c1"># =&gt; ERROR: key not found: four in getindex at dict.jl:489</span>
+<span class="kp">catch</span> <span class="n">e</span>
+    <span class="n">println</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="c1"># Use the get method to avoid that error by providing a default value</span>
+<span class="c1"># get(dictionary,key,default_value)</span>
+<span class="n">get</span><span class="p">(</span><span class="n">filled_dict</span><span class="p">,</span><span class="s2">&quot;one&quot;</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span> <span class="c1"># =&gt; 1</span>
+<span class="n">get</span><span class="p">(</span><span class="n">filled_dict</span><span class="p">,</span><span class="s2">&quot;four&quot;</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span> <span class="c1"># =&gt; 4</span>
+
+<span class="c1"># Use Sets to represent collections of unordered, unique values</span>
+<span class="n">empty_set</span> <span class="o">=</span> <span class="no">Set</span><span class="p">()</span> <span class="c1"># =&gt; Set{Any}()</span>
+<span class="c1"># Initialize a set with values</span>
+<span class="n">filled_set</span> <span class="o">=</span> <span class="no">Set</span><span class="p">(</span><span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="o">]</span><span class="p">)</span> <span class="c1"># =&gt; Set{Int64}(1,2,3,4)</span>
+
+<span class="c1"># Add more values to a set</span>
+<span class="n">push!</span><span class="p">(</span><span class="n">filled_set</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span> <span class="c1"># =&gt; Set{Int64}(5,4,2,3,1)</span>
+
+<span class="c1"># Check if the values are in the set</span>
+<span class="k">in</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">filled_set</span><span class="p">)</span> <span class="c1"># =&gt; true</span>
+<span class="k">in</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">filled_set</span><span class="p">)</span> <span class="c1"># =&gt; false</span>
+
+<span class="c1"># There are functions for set intersection, union, and difference.</span>
+<span class="n">other_set</span> <span class="o">=</span> <span class="no">Set</span><span class="p">(</span><span class="o">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="o">]</span><span class="p">)</span> <span class="c1"># =&gt; Set{Int64}(6,4,5,3)</span>
+<span class="n">intersect</span><span class="p">(</span><span class="n">filled_set</span><span class="p">,</span> <span class="n">other_set</span><span class="p">)</span> <span class="c1"># =&gt; Set{Int64}(3,4,5)</span>
+<span class="n">union</span><span class="p">(</span><span class="n">filled_set</span><span class="p">,</span> <span class="n">other_set</span><span class="p">)</span> <span class="c1"># =&gt; Set{Int64}(1,2,3,4,5,6)</span>
+<span class="n">setdiff</span><span class="p">(</span><span class="no">Set</span><span class="p">(</span><span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="o">]</span><span class="p">),</span><span class="no">Set</span><span class="p">(</span><span class="o">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="o">]</span><span class="p">))</span> <span class="c1"># =&gt; Set{Int64}(1,4)</span>
+
+
+<span class="c1">####################################################</span>
+<span class="c1">## 3. Control Flow</span>
+<span class="c1">####################################################</span>
+
+<span class="c1"># Let&#39;s make a variable</span>
+<span class="n">some_var</span> <span class="o">=</span> <span class="mi">5</span>
+
+<span class="c1"># Here is an if statement. Indentation is not meaningful in Julia.</span>
+<span class="k">if</span> <span class="n">some_var</span> <span class="o">&gt;</span> <span class="mi">10</span>
+    <span class="n">println</span><span class="p">(</span><span class="s2">&quot;some_var is totally bigger than 10.&quot;</span><span class="p">)</span>
+<span class="n">elseif</span> <span class="n">some_var</span> <span class="o">&lt;</span> <span class="mi">10</span>    <span class="c1"># This elseif clause is optional.</span>
+    <span class="n">println</span><span class="p">(</span><span class="s2">&quot;some_var is smaller than 10.&quot;</span><span class="p">)</span>
+<span class="k">else</span>                    <span class="c1"># The else clause is optional too.</span>
+    <span class="n">println</span><span class="p">(</span><span class="s2">&quot;some_var is indeed 10.&quot;</span><span class="p">)</span>
+<span class="k">end</span>
+<span class="c1"># =&gt; prints &quot;some var is smaller than 10&quot;</span>
+
+
+<span class="c1"># For loops iterate over iterables.</span>
+<span class="c1"># Iterable types include Range, Array, Set, Dict, and AbstractString.</span>
+<span class="k">for</span> <span class="n">animal</span><span class="o">=[</span><span class="s2">&quot;dog&quot;</span><span class="p">,</span> <span class="s2">&quot;cat&quot;</span><span class="p">,</span> <span class="s2">&quot;mouse&quot;</span><span class="o">]</span>
+    <span class="n">println</span><span class="p">(</span><span class="s2">&quot;$animal is a mammal&quot;</span><span class="p">)</span>
+    <span class="c1"># You can use $ to interpolate variables or expression into strings</span>
+<span class="k">end</span>
+<span class="c1"># prints:</span>
+<span class="c1">#    dog is a mammal</span>
+<span class="c1">#    cat is a mammal</span>
+<span class="c1">#    mouse is a mammal</span>
+
+<span class="c1"># You can use &#39;in&#39; instead of &#39;=&#39;.</span>
+<span class="k">for</span> <span class="n">animal</span> <span class="k">in</span> <span class="o">[</span><span class="s2">&quot;dog&quot;</span><span class="p">,</span> <span class="s2">&quot;cat&quot;</span><span class="p">,</span> <span class="s2">&quot;mouse&quot;</span><span class="o">]</span>
+    <span class="n">println</span><span class="p">(</span><span class="s2">&quot;$animal is a mammal&quot;</span><span class="p">)</span>
+<span class="k">end</span>
+<span class="c1"># prints:</span>
+<span class="c1">#    dog is a mammal</span>
+<span class="c1">#    cat is a mammal</span>
+<span class="c1">#    mouse is a mammal</span>
+
+<span class="k">for</span> <span class="n">a</span> <span class="k">in</span> <span class="no">Dict</span><span class="p">(</span><span class="s2">&quot;dog&quot;</span><span class="o">=&gt;</span><span class="s2">&quot;mammal&quot;</span><span class="p">,</span><span class="s2">&quot;cat&quot;</span><span class="o">=&gt;</span><span class="s2">&quot;mammal&quot;</span><span class="p">,</span><span class="s2">&quot;mouse&quot;</span><span class="o">=&gt;</span><span class="s2">&quot;mammal&quot;</span><span class="p">)</span>
+    <span class="n">println</span><span class="p">(</span><span class="s2">&quot;$(a[1]) is a $(a[2])&quot;</span><span class="p">)</span>
+<span class="k">end</span>
+<span class="c1"># prints:</span>
+<span class="c1">#    dog is a mammal</span>
+<span class="c1">#    cat is a mammal</span>
+<span class="c1">#    mouse is a mammal</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="p">)</span> <span class="k">in</span> <span class="no">Dict</span><span class="p">(</span><span class="s2">&quot;dog&quot;</span><span class="o">=&gt;</span><span class="s2">&quot;mammal&quot;</span><span class="p">,</span><span class="s2">&quot;cat&quot;</span><span class="o">=&gt;</span><span class="s2">&quot;mammal&quot;</span><span class="p">,</span><span class="s2">&quot;mouse&quot;</span><span class="o">=&gt;</span><span class="s2">&quot;mammal&quot;</span><span class="p">)</span>
+    <span class="n">println</span><span class="p">(</span><span class="s2">&quot;$k is a $v&quot;</span><span class="p">)</span>
+<span class="k">end</span>
+<span class="c1"># prints:</span>
+<span class="c1">#    dog is a mammal</span>
+<span class="c1">#    cat is a mammal</span>
+<span class="c1">#    mouse is a mammal</span>
+
+<span class="c1"># While loops loop while a condition is true</span>
+<span class="n">x</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">while</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">4</span>
+    <span class="n">println</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">+=</span> <span class="mi">1</span>  <span class="c1"># Shorthand for x = x + 1</span>
+<span class="k">end</span>
+<span class="c1"># prints:</span>
+<span class="c1">#   0</span>
+<span class="c1">#   1</span>
+<span class="c1">#   2</span>
+<span class="c1">#   3</span>
+
+<span class="c1"># Handle exceptions with a try/catch block</span>
+<span class="n">try</span>
+   <span class="n">error</span><span class="p">(</span><span class="s2">&quot;help&quot;</span><span class="p">)</span>
+<span class="kp">catch</span> <span class="n">e</span>
+   <span class="n">println</span><span class="p">(</span><span class="s2">&quot;caught it $e&quot;</span><span class="p">)</span>
+<span class="k">end</span>
+<span class="c1"># =&gt; caught it ErrorException(&quot;help&quot;)</span>
+
+
+<span class="c1">####################################################</span>
+<span class="c1">## 4. Functions</span>
+<span class="c1">####################################################</span>
+
+<span class="c1"># The keyword &#39;function&#39; creates new functions</span>
+<span class="c1">#function name(arglist)</span>
+<span class="c1">#  body...</span>
+<span class="c1">#end</span>
+<span class="n">function</span> <span class="n">add</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    <span class="n">println</span><span class="p">(</span><span class="s2">&quot;x is $x and y is $y&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Functions return the value of their last statement</span>
+    <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+<span class="k">end</span>
+
+<span class="n">add</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span> <span class="c1"># =&gt; 11 after printing out &quot;x is 5 and y is 6&quot;</span>
+
+<span class="c1"># Compact assignment of functions</span>
+<span class="n">f_add</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span> <span class="c1"># =&gt; &quot;f (generic function with 1 method)&quot;</span>
+<span class="n">f_add</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span> <span class="c1"># =&gt; 7</span>
+
+<span class="c1"># Function can also return multiple values as tuple</span>
+<span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span> <span class="o">-</span> <span class="n">y</span>
+<span class="n">f</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span> <span class="c1"># =&gt; (7, -1)</span>
+
+<span class="c1"># You can define functions that take a variable number of</span>
+<span class="c1"># positional arguments</span>
+<span class="n">function</span> <span class="n">varargs</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">.</span><span class="o">.</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">args</span>
+    <span class="c1"># use the keyword return to return anywhere in the function</span>
+<span class="k">end</span>
+<span class="c1"># =&gt; varargs (generic function with 1 method)</span>
+
+<span class="n">varargs</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span> <span class="c1"># =&gt; (1,2,3)</span>
+
+<span class="c1"># The ... is called a splat.</span>
+<span class="c1"># We just used it in a function definition.</span>
+<span class="c1"># It can also be used in a function call,</span>
+<span class="c1"># where it will splat an Array or Tuple&#39;s contents into the argument list.</span>
+<span class="n">add</span><span class="p">(</span><span class="o">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="o">].</span><span class="n">.</span><span class="o">.</span><span class="p">)</span> <span class="c1"># this is equivalent to add(5,6)</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">)</span>     <span class="c1"># =&gt; (5,6)</span>
+<span class="n">add</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">.</span><span class="o">.</span><span class="p">)</span>     <span class="c1"># this is equivalent to add(5,6)</span>
+
+
+<span class="c1"># You can define functions with optional positional arguments</span>
+<span class="n">function</span> <span class="n">defaults</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">x</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s2">&quot;$a $b and $x $y&quot;</span>
+<span class="k">end</span>
+
+<span class="n">defaults</span><span class="p">(</span><span class="s1">&#39;h&#39;</span><span class="p">,</span><span class="s1">&#39;g&#39;</span><span class="p">)</span> <span class="c1"># =&gt; &quot;h g and 5 6&quot;</span>
+<span class="n">defaults</span><span class="p">(</span><span class="s1">&#39;h&#39;</span><span class="p">,</span><span class="s1">&#39;g&#39;</span><span class="p">,</span><span class="s1">&#39;j&#39;</span><span class="p">)</span> <span class="c1"># =&gt; &quot;h g and j 6&quot;</span>
+<span class="n">defaults</span><span class="p">(</span><span class="s1">&#39;h&#39;</span><span class="p">,</span><span class="s1">&#39;g&#39;</span><span class="p">,</span><span class="s1">&#39;j&#39;</span><span class="p">,</span><span class="s1">&#39;k&#39;</span><span class="p">)</span> <span class="c1"># =&gt; &quot;h g and j k&quot;</span>
+<span class="n">try</span>
+    <span class="n">defaults</span><span class="p">(</span><span class="s1">&#39;h&#39;</span><span class="p">)</span> <span class="c1"># =&gt; ERROR: no method defaults(Char,)</span>
+    <span class="n">defaults</span><span class="p">()</span> <span class="c1"># =&gt; ERROR: no methods defaults()</span>
+<span class="kp">catch</span> <span class="n">e</span>
+    <span class="n">println</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="c1"># You can define functions that take keyword arguments</span>
+<span class="n">function</span> <span class="n">keyword_args</span><span class="p">(;</span><span class="n">k1</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span><span class="n">name2</span><span class="o">=</span><span class="s2">&quot;hello&quot;</span><span class="p">)</span> <span class="c1"># note the ;</span>
+    <span class="k">return</span> <span class="no">Dict</span><span class="p">(</span><span class="s2">&quot;k1&quot;</span><span class="o">=&gt;</span><span class="n">k1</span><span class="p">,</span><span class="s2">&quot;name2&quot;</span><span class="o">=&gt;</span><span class="n">name2</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="n">keyword_args</span><span class="p">(</span><span class="n">name2</span><span class="o">=</span><span class="s2">&quot;ness&quot;</span><span class="p">)</span> <span class="c1"># =&gt; [&quot;name2&quot;=&gt;&quot;ness&quot;,&quot;k1&quot;=&gt;4]</span>
+<span class="n">keyword_args</span><span class="p">(</span><span class="n">k1</span><span class="o">=</span><span class="s2">&quot;mine&quot;</span><span class="p">)</span> <span class="c1"># =&gt; [&quot;k1&quot;=&gt;&quot;mine&quot;,&quot;name2&quot;=&gt;&quot;hello&quot;]</span>
+<span class="n">keyword_args</span><span class="p">()</span> <span class="c1"># =&gt; [&quot;name2&quot;=&gt;&quot;hello&quot;,&quot;k1&quot;=&gt;4]</span>
+
+<span class="c1"># You can combine all kinds of arguments in the same function</span>
+<span class="n">function</span> <span class="n">all_the_args</span><span class="p">(</span><span class="n">normal_arg</span><span class="p">,</span> <span class="n">optional_positional_arg</span><span class="o">=</span><span class="mi">2</span><span class="p">;</span> <span class="n">keyword_arg</span><span class="o">=</span><span class="s2">&quot;foo&quot;</span><span class="p">)</span>
+    <span class="n">println</span><span class="p">(</span><span class="s2">&quot;normal arg: $normal_arg&quot;</span><span class="p">)</span>
+    <span class="n">println</span><span class="p">(</span><span class="s2">&quot;optional arg: $optional_positional_arg&quot;</span><span class="p">)</span>
+    <span class="n">println</span><span class="p">(</span><span class="s2">&quot;keyword arg: $keyword_arg&quot;</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="n">all_the_args</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">keyword_arg</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="c1"># prints:</span>
+<span class="c1">#   normal arg: 1</span>
+<span class="c1">#   optional arg: 3</span>
+<span class="c1">#   keyword arg: 4</span>
+
+<span class="c1"># Julia has first class functions</span>
+<span class="n">function</span> <span class="n">create_adder</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">adder</span> <span class="o">=</span> <span class="n">function</span> <span class="p">(</span><span class="n">y</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+    <span class="k">end</span>
+    <span class="k">return</span> <span class="n">adder</span>
+<span class="k">end</span>
+
+<span class="c1"># This is &quot;stabby lambda syntax&quot; for creating anonymous functions</span>
+<span class="p">(</span><span class="n">x</span> <span class="o">-&gt;</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">)(</span><span class="mi">3</span><span class="p">)</span> <span class="c1"># =&gt; true</span>
+
+<span class="c1"># This function is identical to create_adder implementation above.</span>
+<span class="n">function</span> <span class="n">create_adder</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">-&gt;</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+<span class="k">end</span>
+
+<span class="c1"># You can also name the internal function, if you want</span>
+<span class="n">function</span> <span class="n">create_adder</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">function</span> <span class="n">adder</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+    <span class="k">end</span>
+    <span class="n">adder</span>
+<span class="k">end</span>
+
+<span class="n">add_10</span> <span class="o">=</span> <span class="n">create_adder</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">add_10</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="c1"># =&gt; 13</span>
+
+
+<span class="c1"># There are built-in higher order functions</span>
+<span class="n">map</span><span class="p">(</span><span class="n">add_10</span><span class="p">,</span> <span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="o">]</span><span class="p">)</span> <span class="c1"># =&gt; [11, 12, 13]</span>
+<span class="n">filter</span><span class="p">(</span><span class="n">x</span> <span class="o">-&gt;</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">5</span><span class="p">,</span> <span class="o">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="o">]</span><span class="p">)</span> <span class="c1"># =&gt; [6, 7]</span>
+
+<span class="c1"># We can use list comprehensions for nicer maps</span>
+<span class="o">[</span><span class="n">add_10</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="o">=[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="o">]]</span> <span class="c1"># =&gt; [11, 12, 13]</span>
+<span class="o">[</span><span class="n">add_10</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="o">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="o">]]</span> <span class="c1"># =&gt; [11, 12, 13]</span>
+
+<span class="c1">####################################################</span>
+<span class="c1">## 5. Types</span>
+<span class="c1">####################################################</span>
+
+<span class="c1"># Julia has a type system.</span>
+<span class="c1"># Every value has a type; variables do not have types themselves.</span>
+<span class="c1"># You can use the `typeof` function to get the type of a value.</span>
+<span class="n">typeof</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="c1"># =&gt; Int64</span>
+
+<span class="c1"># Types are first-class values</span>
+<span class="n">typeof</span><span class="p">(</span><span class="no">Int64</span><span class="p">)</span> <span class="c1"># =&gt; DataType</span>
+<span class="n">typeof</span><span class="p">(</span><span class="no">DataType</span><span class="p">)</span> <span class="c1"># =&gt; DataType</span>
+<span class="c1"># DataType is the type that represents types, including itself.</span>
+
+<span class="c1"># Types are used for documentation, optimizations, and dispatch.</span>
+<span class="c1"># They are not statically checked.</span>
+
+<span class="c1"># Users can define types</span>
+<span class="c1"># They are like records or structs in other languages.</span>
+<span class="c1"># New types are defined using the `type` keyword.</span>
+
+<span class="c1"># type Name</span>
+<span class="c1">#   field::OptionalType</span>
+<span class="c1">#   ...</span>
+<span class="c1"># end</span>
+<span class="n">type</span> <span class="no">Tiger</span>
+  <span class="n">taillength</span><span class="o">::</span><span class="no">Float64</span>
+  <span class="n">coatcolor</span> <span class="c1"># not including a type annotation is the same as `::Any`</span>
+<span class="k">end</span>
+
+<span class="c1"># The default constructor&#39;s arguments are the properties</span>
+<span class="c1"># of the type, in the order they are listed in the definition</span>
+<span class="n">tigger</span> <span class="o">=</span> <span class="no">Tiger</span><span class="p">(</span><span class="mi">3</span><span class="o">.</span><span class="mi">5</span><span class="p">,</span><span class="s2">&quot;orange&quot;</span><span class="p">)</span> <span class="c1"># =&gt; Tiger(3.5,&quot;orange&quot;)</span>
+
+<span class="c1"># The type doubles as the constructor function for values of that type</span>
+<span class="n">sherekhan</span> <span class="o">=</span> <span class="n">typeof</span><span class="p">(</span><span class="n">tigger</span><span class="p">)(</span><span class="mi">5</span><span class="o">.</span><span class="mi">6</span><span class="p">,</span><span class="s2">&quot;fire&quot;</span><span class="p">)</span> <span class="c1"># =&gt; Tiger(5.6,&quot;fire&quot;)</span>
+
+<span class="c1"># These struct-style types are called concrete types</span>
+<span class="c1"># They can be instantiated, but cannot have subtypes.</span>
+<span class="c1"># The other kind of types is abstract types.</span>
+
+<span class="c1"># abstract Name</span>
+<span class="n">abstract</span> <span class="no">Cat</span> <span class="c1"># just a name and point in the type hierarchy</span>
+
+<span class="c1"># Abstract types cannot be instantiated, but can have subtypes.</span>
+<span class="c1"># For example, Number is an abstract type</span>
+<span class="n">subtypes</span><span class="p">(</span><span class="no">Number</span><span class="p">)</span> <span class="c1"># =&gt; 2-element Array{Any,1}:</span>
+                 <span class="c1">#     Complex{T&lt;:Real}</span>
+                 <span class="c1">#     Real</span>
+<span class="n">subtypes</span><span class="p">(</span><span class="no">Cat</span><span class="p">)</span> <span class="c1"># =&gt; 0-element Array{Any,1}</span>
+
+<span class="c1"># AbstractString, as the name implies, is also an abstract type</span>
+<span class="n">subtypes</span><span class="p">(</span><span class="no">AbstractString</span><span class="p">)</span>    <span class="c1"># 8-element Array{Any,1}:</span>
+                            <span class="c1">#  Base.SubstitutionString{T&lt;:AbstractString}</span>
+                            <span class="c1">#  DirectIndexString</span>
+                            <span class="c1">#  RepString</span>
+                            <span class="c1">#  RevString{T&lt;:AbstractString}</span>
+                            <span class="c1">#  RopeString</span>
+                            <span class="c1">#  SubString{T&lt;:AbstractString}</span>
+                            <span class="c1">#  UTF16String</span>
+                            <span class="c1">#  UTF8String</span>
+
+<span class="c1"># Every type has a super type; use the `super` function to get it.</span>
+<span class="n">typeof</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="c1"># =&gt; Int64</span>
+<span class="k">super</span><span class="p">(</span><span class="no">Int64</span><span class="p">)</span> <span class="c1"># =&gt; Signed</span>
+<span class="k">super</span><span class="p">(</span><span class="no">Signed</span><span class="p">)</span> <span class="c1"># =&gt; Integer</span>
+<span class="k">super</span><span class="p">(</span><span class="nb">Integer</span><span class="p">)</span> <span class="c1"># =&gt; Real</span>
+<span class="k">super</span><span class="p">(</span><span class="no">Real</span><span class="p">)</span> <span class="c1"># =&gt; Number</span>
+<span class="k">super</span><span class="p">(</span><span class="no">Number</span><span class="p">)</span> <span class="c1"># =&gt; Any</span>
+<span class="k">super</span><span class="p">(</span><span class="k">super</span><span class="p">(</span><span class="no">Signed</span><span class="p">))</span> <span class="c1"># =&gt; Real</span>
+<span class="k">super</span><span class="p">(</span><span class="no">Any</span><span class="p">)</span> <span class="c1"># =&gt; Any</span>
+<span class="c1"># All of these type, except for Int64, are abstract.</span>
+<span class="n">typeof</span><span class="p">(</span><span class="s2">&quot;fire&quot;</span><span class="p">)</span> <span class="c1"># =&gt; ASCIIString</span>
+<span class="k">super</span><span class="p">(</span><span class="no">ASCIIString</span><span class="p">)</span> <span class="c1"># =&gt; DirectIndexString</span>
+<span class="k">super</span><span class="p">(</span><span class="no">DirectIndexString</span><span class="p">)</span> <span class="c1"># =&gt; AbstractString</span>
+<span class="c1"># Likewise here with ASCIIString</span>
+
+<span class="c1"># &lt;: is the subtyping operator</span>
+<span class="n">type</span> <span class="no">Lion</span> <span class="o">&lt;</span><span class="p">:</span> <span class="no">Cat</span> <span class="c1"># Lion is a subtype of Cat</span>
+  <span class="n">mane_color</span>
+  <span class="n">roar</span><span class="o">::</span><span class="no">AbstractString</span>
+<span class="k">end</span>
+
+<span class="c1"># You can define more constructors for your type</span>
+<span class="c1"># Just define a function of the same name as the type</span>
+<span class="c1"># and call an existing constructor to get a value of the correct type</span>
+<span class="no">Lion</span><span class="p">(</span><span class="n">roar</span><span class="o">::</span><span class="no">AbstractString</span><span class="p">)</span> <span class="o">=</span> <span class="no">Lion</span><span class="p">(</span><span class="s2">&quot;green&quot;</span><span class="p">,</span><span class="n">roar</span><span class="p">)</span>
+<span class="c1"># This is an outer constructor because it&#39;s outside the type definition</span>
+
+<span class="n">type</span> <span class="no">Panther</span> <span class="o">&lt;</span><span class="p">:</span> <span class="no">Cat</span> <span class="c1"># Panther is also a subtype of Cat</span>
+  <span class="n">eye_color</span>
+  <span class="no">Panther</span><span class="p">()</span> <span class="o">=</span> <span class="kp">new</span><span class="p">(</span><span class="s2">&quot;green&quot;</span><span class="p">)</span>
+  <span class="c1"># Panthers will only have this constructor, and no default constructor.</span>
+<span class="k">end</span>
+<span class="c1"># Using inner constructors, like Panther does, gives you control</span>
+<span class="c1"># over how values of the type can be created.</span>
+<span class="c1"># When possible, you should use outer constructors rather than inner ones.</span>
+
+<span class="c1">####################################################</span>
+<span class="c1">## 6. Multiple-Dispatch</span>
+<span class="c1">####################################################</span>
+
+<span class="c1"># In Julia, all named functions are generic functions</span>
+<span class="c1"># This means that they are built up from many small methods</span>
+<span class="c1"># Each constructor for Lion is a method of the generic function Lion.</span>
+
+<span class="c1"># For a non-constructor example, let&#39;s make a function meow:</span>
+
+<span class="c1"># Definitions for Lion, Panther, Tiger</span>
+<span class="n">function</span> <span class="n">meow</span><span class="p">(</span><span class="n">animal</span><span class="o">::</span><span class="no">Lion</span><span class="p">)</span>
+  <span class="n">animal</span><span class="o">.</span><span class="n">roar</span> <span class="c1"># access type properties using dot notation</span>
+<span class="k">end</span>
+
+<span class="n">function</span> <span class="n">meow</span><span class="p">(</span><span class="n">animal</span><span class="o">::</span><span class="no">Panther</span><span class="p">)</span>
+  <span class="s2">&quot;grrr&quot;</span>
+<span class="k">end</span>
+
+<span class="n">function</span> <span class="n">meow</span><span class="p">(</span><span class="n">animal</span><span class="o">::</span><span class="no">Tiger</span><span class="p">)</span>
+  <span class="s2">&quot;rawwwr&quot;</span>
+<span class="k">end</span>
+
+<span class="c1"># Testing the meow function</span>
+<span class="n">meow</span><span class="p">(</span><span class="n">tigger</span><span class="p">)</span> <span class="c1"># =&gt; &quot;rawwr&quot;</span>
+<span class="n">meow</span><span class="p">(</span><span class="no">Lion</span><span class="p">(</span><span class="s2">&quot;brown&quot;</span><span class="p">,</span><span class="s2">&quot;ROAAR&quot;</span><span class="p">))</span> <span class="c1"># =&gt; &quot;ROAAR&quot;</span>
+<span class="n">meow</span><span class="p">(</span><span class="no">Panther</span><span class="p">())</span> <span class="c1"># =&gt; &quot;grrr&quot;</span>
+
+<span class="c1"># Review the local type hierarchy</span>
+<span class="n">issubtype</span><span class="p">(</span><span class="no">Tiger</span><span class="p">,</span><span class="no">Cat</span><span class="p">)</span> <span class="c1"># =&gt; false</span>
+<span class="n">issubtype</span><span class="p">(</span><span class="no">Lion</span><span class="p">,</span><span class="no">Cat</span><span class="p">)</span> <span class="c1"># =&gt; true</span>
+<span class="n">issubtype</span><span class="p">(</span><span class="no">Panther</span><span class="p">,</span><span class="no">Cat</span><span class="p">)</span> <span class="c1"># =&gt; true</span>
+
+<span class="c1"># Defining a function that takes Cats</span>
+<span class="n">function</span> <span class="n">pet_cat</span><span class="p">(</span><span class="n">cat</span><span class="o">::</span><span class="no">Cat</span><span class="p">)</span>
+  <span class="n">println</span><span class="p">(</span><span class="s2">&quot;The cat says $(meow(cat))&quot;</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="n">pet_cat</span><span class="p">(</span><span class="no">Lion</span><span class="p">(</span><span class="s2">&quot;42&quot;</span><span class="p">))</span> <span class="c1"># =&gt; prints &quot;The cat says 42&quot;</span>
+<span class="n">try</span>
+    <span class="n">pet_cat</span><span class="p">(</span><span class="n">tigger</span><span class="p">)</span> <span class="c1"># =&gt; ERROR: no method pet_cat(Tiger,)</span>
+<span class="kp">catch</span> <span class="n">e</span>
+    <span class="n">println</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="c1"># In OO languages, single dispatch is common;</span>
+<span class="c1"># this means that the method is picked based on the type of the first argument.</span>
+<span class="c1"># In Julia, all of the argument types contribute to selecting the best method.</span>
+
+<span class="c1"># Let&#39;s define a function with more arguments, so we can see the difference</span>
+<span class="n">function</span> <span class="n">fight</span><span class="p">(</span><span class="n">t</span><span class="o">::</span><span class="no">Tiger</span><span class="p">,</span><span class="n">c</span><span class="o">::</span><span class="no">Cat</span><span class="p">)</span>
+  <span class="n">println</span><span class="p">(</span><span class="s2">&quot;The $(t.coatcolor) tiger wins!&quot;</span><span class="p">)</span>
+<span class="k">end</span>
+<span class="c1"># =&gt; fight (generic function with 1 method)</span>
+
+<span class="n">fight</span><span class="p">(</span><span class="n">tigger</span><span class="p">,</span><span class="no">Panther</span><span class="p">())</span> <span class="c1"># =&gt; prints The orange tiger wins!</span>
+<span class="n">fight</span><span class="p">(</span><span class="n">tigger</span><span class="p">,</span><span class="no">Lion</span><span class="p">(</span><span class="s2">&quot;ROAR&quot;</span><span class="p">))</span> <span class="c1"># =&gt; prints The orange tiger wins!</span>
+
+<span class="c1"># Let&#39;s change the behavior when the Cat is specifically a Lion</span>
+<span class="n">fight</span><span class="p">(</span><span class="n">t</span><span class="o">::</span><span class="no">Tiger</span><span class="p">,</span><span class="n">l</span><span class="o">::</span><span class="no">Lion</span><span class="p">)</span> <span class="o">=</span> <span class="n">println</span><span class="p">(</span><span class="s2">&quot;The $(l.mane_color)-maned lion wins!&quot;</span><span class="p">)</span>
+<span class="c1"># =&gt; fight (generic function with 2 methods)</span>
+
+<span class="n">fight</span><span class="p">(</span><span class="n">tigger</span><span class="p">,</span><span class="no">Panther</span><span class="p">())</span> <span class="c1"># =&gt; prints The orange tiger wins!</span>
+<span class="n">fight</span><span class="p">(</span><span class="n">tigger</span><span class="p">,</span><span class="no">Lion</span><span class="p">(</span><span class="s2">&quot;ROAR&quot;</span><span class="p">))</span> <span class="c1"># =&gt; prints The green-maned lion wins!</span>
+
+<span class="c1"># We don&#39;t need a Tiger in order to fight</span>
+<span class="n">fight</span><span class="p">(</span><span class="n">l</span><span class="o">::</span><span class="no">Lion</span><span class="p">,</span><span class="n">c</span><span class="o">::</span><span class="no">Cat</span><span class="p">)</span> <span class="o">=</span> <span class="n">println</span><span class="p">(</span><span class="s2">&quot;The victorious cat says $(meow(c))&quot;</span><span class="p">)</span>
+<span class="c1"># =&gt; fight (generic function with 3 methods)</span>
+
+<span class="n">fight</span><span class="p">(</span><span class="no">Lion</span><span class="p">(</span><span class="s2">&quot;balooga!&quot;</span><span class="p">),</span><span class="no">Panther</span><span class="p">())</span> <span class="c1"># =&gt; prints The victorious cat says grrr</span>
+<span class="n">try</span>
+  <span class="n">fight</span><span class="p">(</span><span class="no">Panther</span><span class="p">(),</span><span class="no">Lion</span><span class="p">(</span><span class="s2">&quot;RAWR&quot;</span><span class="p">))</span> <span class="c1"># =&gt; ERROR: no method fight(Panther,Lion)</span>
+<span class="kp">catch</span>
+<span class="k">end</span>
+
+<span class="c1"># Also let the cat go first</span>
+<span class="n">fight</span><span class="p">(</span><span class="n">c</span><span class="o">::</span><span class="no">Cat</span><span class="p">,</span><span class="n">l</span><span class="o">::</span><span class="no">Lion</span><span class="p">)</span> <span class="o">=</span> <span class="n">println</span><span class="p">(</span><span class="s2">&quot;The cat beats the Lion&quot;</span><span class="p">)</span>
+<span class="c1"># =&gt; Warning: New definition</span>
+<span class="c1">#    fight(Cat,Lion) at none:1</span>
+<span class="c1"># is ambiguous with</span>
+<span class="c1">#    fight(Lion,Cat) at none:2.</span>
+<span class="c1"># Make sure</span>
+<span class="c1">#    fight(Lion,Lion)</span>
+<span class="c1"># is defined first.</span>
+<span class="c1">#fight (generic function with 4 methods)</span>
+
+<span class="c1"># This warning is because it&#39;s unclear which fight will be called in:</span>
+<span class="n">fight</span><span class="p">(</span><span class="no">Lion</span><span class="p">(</span><span class="s2">&quot;RAR&quot;</span><span class="p">),</span><span class="no">Lion</span><span class="p">(</span><span class="s2">&quot;brown&quot;</span><span class="p">,</span><span class="s2">&quot;rarrr&quot;</span><span class="p">))</span> <span class="c1"># =&gt; prints The victorious cat says rarrr</span>
+<span class="c1"># The result may be different in other versions of Julia</span>
+
+<span class="n">fight</span><span class="p">(</span><span class="n">l</span><span class="o">::</span><span class="no">Lion</span><span class="p">,</span><span class="n">l2</span><span class="o">::</span><span class="no">Lion</span><span class="p">)</span> <span class="o">=</span> <span class="n">println</span><span class="p">(</span><span class="s2">&quot;The lions come to a tie&quot;</span><span class="p">)</span>
+<span class="n">fight</span><span class="p">(</span><span class="no">Lion</span><span class="p">(</span><span class="s2">&quot;RAR&quot;</span><span class="p">),</span><span class="no">Lion</span><span class="p">(</span><span class="s2">&quot;brown&quot;</span><span class="p">,</span><span class="s2">&quot;rarrr&quot;</span><span class="p">))</span> <span class="c1"># =&gt; prints The lions come to a tie</span>
+
+
+<span class="c1"># Under the hood</span>
+<span class="c1"># You can take a look at the llvm  and the assembly code generated.</span>
+
+<span class="n">square_area</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="o">=</span> <span class="n">l</span> <span class="o">*</span> <span class="n">l</span>      <span class="c1"># square_area (generic function with 1 method)</span>
+
+<span class="n">square_area</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="c1">#25</span>
+
+<span class="c1"># What happens when we feed square_area an integer?</span>
+<span class="n">code_native</span><span class="p">(</span><span class="n">square_area</span><span class="p">,</span> <span class="p">(</span><span class="no">Int32</span><span class="p">,))</span>
+    <span class="c1">#       .section    __TEXT,__text,regular,pure_instructions</span>
+    <span class="c1">#   Filename: none</span>
+    <span class="c1">#   Source line: 1              # Prologue</span>
+    <span class="c1">#       push    RBP</span>
+    <span class="c1">#       mov RBP, RSP</span>
+    <span class="c1">#   Source line: 1</span>
+    <span class="c1">#       movsxd  RAX, EDI        # Fetch l from memory?</span>
+    <span class="c1">#       imul    RAX, RAX        # Square l and store the result in RAX</span>
+    <span class="c1">#       pop RBP                 # Restore old base pointer</span>
+    <span class="c1">#       ret                     # Result will still be in RAX</span>
+
+<span class="n">code_native</span><span class="p">(</span><span class="n">square_area</span><span class="p">,</span> <span class="p">(</span><span class="no">Float32</span><span class="p">,))</span>
+    <span class="c1">#       .section    __TEXT,__text,regular,pure_instructions</span>
+    <span class="c1">#   Filename: none</span>
+    <span class="c1">#   Source line: 1</span>
+    <span class="c1">#       push    RBP</span>
+    <span class="c1">#       mov RBP, RSP</span>
+    <span class="c1">#   Source line: 1</span>
+    <span class="c1">#       vmulss  XMM0, XMM0, XMM0  # Scalar single precision multiply (AVX)</span>
+    <span class="c1">#       pop RBP</span>
+    <span class="c1">#       ret</span>
+
+<span class="n">code_native</span><span class="p">(</span><span class="n">square_area</span><span class="p">,</span> <span class="p">(</span><span class="no">Float64</span><span class="p">,))</span>
+    <span class="c1">#       .section    __TEXT,__text,regular,pure_instructions</span>
+    <span class="c1">#   Filename: none</span>
+    <span class="c1">#   Source line: 1</span>
+    <span class="c1">#       push    RBP</span>
+    <span class="c1">#       mov RBP, RSP</span>
+    <span class="c1">#   Source line: 1</span>
+    <span class="c1">#       vmulsd  XMM0, XMM0, XMM0 # Scalar double precision multiply (AVX)</span>
+    <span class="c1">#       pop RBP</span>
+    <span class="c1">#       ret</span>
+    <span class="c1">#</span>
+<span class="c1"># Note that julia will use floating point instructions if any of the</span>
+<span class="c1"># arguments are floats.</span>
+<span class="c1"># Let&#39;s calculate the area of a circle</span>
+<span class="n">circle_area</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="o">=</span> <span class="n">pi</span> <span class="o">*</span> <span class="n">r</span> <span class="o">*</span> <span class="n">r</span>     <span class="c1"># circle_area (generic function with 1 method)</span>
+<span class="n">circle_area</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>                  <span class="c1"># 78.53981633974483</span>
+
+<span class="n">code_native</span><span class="p">(</span><span class="n">circle_area</span><span class="p">,</span> <span class="p">(</span><span class="no">Int32</span><span class="p">,))</span>
+    <span class="c1">#       .section    __TEXT,__text,regular,pure_instructions</span>
+    <span class="c1">#   Filename: none</span>
+    <span class="c1">#   Source line: 1</span>
+    <span class="c1">#       push    RBP</span>
+    <span class="c1">#       mov RBP, RSP</span>
+    <span class="c1">#   Source line: 1</span>
+    <span class="c1">#       vcvtsi2sd   XMM0, XMM0, EDI          # Load integer (r) from memory</span>
+    <span class="c1">#       movabs  RAX, 4593140240              # Load pi</span>
+    <span class="c1">#       vmulsd  XMM1, XMM0, QWORD PTR [RAX]  # pi * r</span>
+    <span class="c1">#       vmulsd  XMM0, XMM0, XMM1             # (pi * r) * r</span>
+    <span class="c1">#       pop RBP</span>
+    <span class="c1">#       ret</span>
+    <span class="c1">#</span>
+
+<span class="n">code_native</span><span class="p">(</span><span class="n">circle_area</span><span class="p">,</span> <span class="p">(</span><span class="no">Float64</span><span class="p">,))</span>
+    <span class="c1">#       .section    __TEXT,__text,regular,pure_instructions</span>
+    <span class="c1">#   Filename: none</span>
+    <span class="c1">#   Source line: 1</span>
+    <span class="c1">#       push    RBP</span>
+    <span class="c1">#       mov RBP, RSP</span>
+    <span class="c1">#       movabs  RAX, 4593140496</span>
+    <span class="c1">#   Source line: 1</span>
+    <span class="c1">#       vmulsd  XMM1, XMM0, QWORD PTR [RAX]</span>
+    <span class="c1">#       vmulsd  XMM0, XMM1, XMM0</span>
+    <span class="c1">#       pop RBP</span>
+    <span class="c1">#       ret</span>
+    <span class="c1">#</span>
+</pre></div>
+<h2>Further Reading</h2>
+
+<p>You can get a lot more detail from <a href="http://docs.julialang.org/en/latest/#Manual-1">The Julia Manual</a></p>
+
+<p>The best place to get help with Julia is the (very friendly) <a href="https://discourse.julialang.org/">Discourse forum</a>.</p>
+
+    <hr>
+    <p>Got a suggestion? A correction, perhaps? <a href="https://github.com/adambard/learnxinyminutes-docs/issues/new">Open an Issue</a> on the Github Repo, or make a pull request yourself!
+    </p>
+    <p class="contributed">
+    Originally contributed by Leah Hanson, and updated by <a href="https://github.com/adambard/learnxinyminutes-docs/blame/master/julia.html.markdown">23 contributor(s)</a>.
+    </p>
+
+    <footer>
+    <a style="float: left" rel="license" href="https://creativecommons.org/licenses/by-sa/3.0/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/3.0/88x31.png" /></a>
+    <p>
+    &copy; 2017
+        <a href="http://leahhanson.us">Leah Hanson</a>,
+        <a href="http://github.com/pranitbauva1997">Pranit Bauva</a>
+    </p>
+
+    <p>
+
+    </footer>
+  </div>
+
+        </div>
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+        <script src="/js/script.js"></script>
+
+        <script>
+            var _gaq=[['_setAccount','UA-3525624-21'],['_trackPageview']];
+            (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+            g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+            s.parentNode.insertBefore(g,s)}(document,'script'));
+        </script>
+    </body>
+</html>
